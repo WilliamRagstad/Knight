@@ -1,0 +1,34 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "WilliamRagstad",
+      "name": "William Rågstad",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41281398?v=4",
+      "profile": "https://www.williamragstad.com/",
+      "contributions": [
+        "code",
+        "infra",
+        "test",
+        "doc",
+        "tutorial",
+        "design",
+        "example",
+        "ideas",
+        "platform",
+        "plugin",
+        "content"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Knight",
+  "projectOwner": "WilliamRagstad",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
