@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import {
+  HTTPMethods,
   Request,
   Response,
   RouteParams,
@@ -36,7 +37,7 @@ type StringRouterMiddleware = RouterMiddleware<
 /**
  * A type that represents Synchronous or Asynchronous void return types
  */
-type Void = Promise<unknown> | Promise<void> | void;
+type Void = Promise<void> | void;
 
 enum AppMode {
   DEV,
@@ -44,4 +45,11 @@ enum AppMode {
 }
 
 export { AppMode, IController, Request, Response };
-export type { Constructor, Context, Params, StringRouterMiddleware, Void };
+export type {
+  Constructor,
+  Context,
+  HTTPMethods,
+  Params,
+  StringRouterMiddleware,
+  Void,
+};
