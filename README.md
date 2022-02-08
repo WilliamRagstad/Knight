@@ -147,7 +147,7 @@ export default class User {
 }
 ```
 
-> View the source code for this example code on [GitHub](https://github.com/WilliamRagstad/Knight/test).
+> View the source code for this example code on [GitHub](https://github.com/WilliamRagstad/Knight/example).
 
 
 
