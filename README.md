@@ -7,8 +7,8 @@
 	<td>
 	<h1>Knight</h1>
 	<p>
-		A MVC web server framework for
-		Deno 🦕 built on <a href="https://deno.land/x/oak@v10.2.0">Oak</a>.
+		A MVC REST framework for Deno 🦕 built on <a href="https://deno.land/x/oak@v10.2.0">Oak</a>.
+		Generate Controller-based CRUD APIs with ease.
 	</p>
 	</td>
 	</tbody>
