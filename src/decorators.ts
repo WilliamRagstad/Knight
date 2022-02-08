@@ -1,6 +1,4 @@
-import { HTTPMethods } from "https://deno.land/x/oak/mod.ts";
-import IController from "./IController.ts";
-import { Constructor } from "./types.ts";
+import { Constructor, HTTPMethods, IController } from "./types.ts";
 
 /*
 	dP""b8  dP"Yb  88b 88 888888 88""Yb  dP"Yb  88     88     888888 88""Yb     8888b.  888888  dP""b8  dP"Yb  88""Yb    db    888888  dP"Yb  88""Yb .dP"Y8
