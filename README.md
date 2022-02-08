@@ -17,9 +17,151 @@
 
 ## About
 
-This framework allows you to create a rich REST API with just a few lines of code.
-The web server is powered by [Oak](https://oakserver.github.io/oak/) and utilizes Deno’s native HTTP server
-and builds upon the existing middleware and routing stack, to allow for automatic endpoint generation.
+This framework allows you to create a rich REST API with just a few lines of
+code. The web server is powered by [Oak](https://oakserver.github.io/oak/) and
+utilizes Deno’s native HTTP server and builds upon the existing middleware and
+routing stack, to allow for automatic endpoint generation.
 
+Focus on what you want to do, and the framework will take care of the rest.
+
+## Documentation
+> ### View the full [technical documentation](https://doc.deno.land/https://deno.land/x/knight/mod.ts).
 
 ## Getting Started
+
+You can use the knight framework in three different ways, start by importing the
+latest version of the `Knight` module. Now either let Knight create a new server
+instance, or use an existing Oak application. In the example below we will use
+the former.
+
+`/index.ts`
+
+```ts
+import { Knight } from "https://deno.land/x/knight/mod.ts";
+import UserController from "./controller/UserController.ts";
+
+const app = Knight.createApi([
+  new UserController(),
+]);
+
+console.log("Server ready on http://localhost:8000");
+
+await app.listen({ port: 8000 });
+```
+
+In this introduction, we will use the `UserController` class from the example
+above.
+
+> ### Project Structure
+>
+> We suggest that the project structure is as follows:
+>
+> ```
+> /
+> ├── controller/
+> │   └── UserController.ts
+> ├── model/
+> │   └── User.ts
+> ├── index.ts
+> ```
+
+Now let's create the `UserController` class. By default the framework provides a
+`IController` class, which is a base class for all controllers and provides a
+set of overloadable methods that are common to all controllers. Such methods
+include `get`, `getById`, `post`, `delete` and `put`. Though you can easily
+define your own custom endpoints using the `@Endpoint` decorator.
+
+`/controller/UserController.ts`
+```ts
+import {
+  bodyMappingJSON,
+  Context,
+  Controller,
+  created,
+  Endpoint,
+  IController,
+  ok,
+  Params,
+} from "https://deno.land/x/knight/mod.ts";
+
+import User from "../model/User.ts";
+
+@Controller("/user")
+export default class UserController extends IController {
+  async post({ request, response }: Context): Promise<void> {
+    const user = await bodyMappingJSON(request, User);
+    created(response, `User ${user.firstName} was successfully created`);
+  }
+
+  @Endpoint("GET", "/:id/email")
+  getByEmail({ id }: Params, { response }: Context): void {
+    const email = id + "@example.com";
+    ok(response, `User with email ${email} was successfully found`);
+  }
+}
+```
+
+The controller class is responsible for handling all requests to the endpoint.
+Knight comes with a set of built-in mapping functions that can be used to handle request of different DTO classes.
+One of these functions is `bodyMappingJSON`. This function takes a request and a class and returns the parsed body as an instance of the class. In the example above, the request body is parsed as a JSON object and returned as an instance of the `User` class.
+
+Creating a model class is as easy as defining a regular class.
+Mark nullable, or optional properties with the `?` symbol and the `@Optional` decorator to signify that the property is optional to body mapping functions.
+
+`/model/User.ts`
+```ts
+import { Optional } from "../../mod.ts";
+
+export default class User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  @Optional()
+  country: string;
+  @Optional()
+  city?: string;
+  @Optional()
+  phone?: number;
+
+  constructor(
+    firstName: string,
+    lastName: string,
+    email: string,
+    country: string,
+    city?: string,
+    phone?: number,
+  ) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.country = country;
+    this.city = city;
+    this.phone = phone;
+  }
+}
+```
+
+> View the source code for this example code on [GitHub](https://github.com/WilliamRagstad/Knight/test).
+
+
+
+## Endpoints
+
+As described in the previous section, the framework provides a set of
+overloadable methods that are commonly used through the `IController` class.
+These methods are:
+
+- `get(ctx: Context): void | Promise<void>`
+- `getById(id: string, ctx: Context): void | Promise<void>`
+- `post(ctx: Context): void | Promise<void>`
+- `delete(id: string, ctx: Context): void | Promise<void>`
+- `put(id: string, ctx: Context): void | Promise<void>`
+
+All of these methods are overloaded to accept a `Context` object, which is a type provided by Knight to allow for easy access to the request and response objects. As well as the `Params` object for custom `@Endpoint` methods, which contains the parameters passed to the endpoint.
+
+All of these have full support for asynchronous alternatives, which means that you can use `async`/`await` and return a `Promise` from the controller method and the framework will adapt the response accordingly.
+
+
+## Contribute
+All contributions are welcome!
+Create an issue or pull request on [GitHub](https://github.com/WilliamRagstad/Knight) to help us improve the framework.
