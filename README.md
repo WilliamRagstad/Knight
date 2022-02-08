@@ -2,7 +2,7 @@
 	<table>
 	<tbody>
 	<td>
-	<img src="assets/logo.png" height="150px">
+	<img src="assets/logo.png" width="150px">
 	</td>
 	<td>
 	<h1>Knight</h1>
