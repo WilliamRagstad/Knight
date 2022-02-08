@@ -169,6 +169,7 @@ All of these have full support for asynchronous alternatives, which means that y
 ## Contribute
 All contributions are welcome!
 Create an issue or pull request on [GitHub](https://github.com/WilliamRagstad/Knight) to help us improve the framework.
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
