@@ -1,4 +1,7 @@
 <div align="center">
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 	<table>
 	<tbody>
 	<td>
@@ -165,3 +168,22 @@ All of these have full support for asynchronous alternatives, which means that y
 ## Contribute
 All contributions are welcome!
 Create an issue or pull request on [GitHub](https://github.com/WilliamRagstad/Knight) to help us improve the framework.
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://www.williamragstad.com/"><img src="https://avatars.githubusercontent.com/u/41281398?v=4?s=100" width="100px;" alt=""/><br /><sub><b>William Rågstad</b></sub></a><br /><a href="https://github.com/WilliamRagstad/Knight/commits?author=WilliamRagstad" title="Code">💻</a> <a href="#infra-WilliamRagstad" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/WilliamRagstad/Knight/commits?author=WilliamRagstad" title="Tests">⚠️</a> <a href="https://github.com/WilliamRagstad/Knight/commits?author=WilliamRagstad" title="Documentation">📖</a> <a href="#tutorial-WilliamRagstad" title="Tutorials">✅</a> <a href="#design-WilliamRagstad" title="Design">🎨</a> <a href="#example-WilliamRagstad" title="Examples">💡</a> <a href="#ideas-WilliamRagstad" title="Ideas, Planning, & Feedback">🤔</a> <a href="#platform-WilliamRagstad" title="Packaging/porting to new platform">📦</a> <a href="#plugin-WilliamRagstad" title="Plugin/utility libraries">🔌</a> <a href="#content-WilliamRagstad" title="Content">🖋</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
