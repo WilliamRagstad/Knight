@@ -1,57 +1,47 @@
 // deno-lint-ignore-file no-explicit-any
 import {
-	Application,
-	Router,
-	RouteParams,
-	RouterContext,
-	RouterMiddleware,
-	Request,
-	Response,
-	Context,
-	HTTPMethods,
-	State
+  Request,
+  Response,
+  RouteParams,
+  RouterContext,
+  RouterMiddleware,
 } from "https://deno.land/x/oak/mod.ts";
+
 import IController from "./IController.ts";
 
-export type Constructor<T> = new (...args: any[]) => T;
+type Constructor<T> = new (...args: any[]) => T;
 
-export type Params = RouteParams<string>;
+/**
+ * Knights own router endpoint parameter type.
+ * This is a custom type that extends the Oak `RouteParams` type.
+ */
+type Params = RouteParams<string>;
 
-export type StringRouterMiddleware = RouterMiddleware<
-	string,
-	Params,
-	Record<string, any>
+/**
+ * Knights own router context type.
+ * This is a custom type that extends the Oak `Context`.
+ */
+type Context = RouterContext<
+  string,
+  Params,
+  Record<string | number, string | undefined>
 >;
-export type StringRouterContext = RouterContext<
-	string,
-	Params,
-	Record<string, any>
+
+type StringRouterMiddleware = RouterMiddleware<
+  string,
+  Params,
+  Record<string, any>
 >;
 
-export type UnknownReturn = Promise<unknown> | unknown | Promise<void> | void;
+/**
+ * A type that represents Synchronous or Asynchronous void return types
+ */
+type Void = Promise<unknown> | Promise<void> | void;
 
-export type StringEndpoint = (
-	params: Params,
-	ctx: RouterContext<string, Params, Record<string, any>>,
-) => UnknownReturn;
-
-
-export enum AppMode {
-	DEV,
-	PROD,
+enum AppMode {
+  DEV,
+  PROD,
 }
 
-export {
-	IController,
-	Application,
-	Router, Request,
-	Response,
-	Context
-};
-export type {
-	HTTPMethods,
-	State,
-	RouterContext,
-	RouteParams,
-	RouterMiddleware
-};
+export { AppMode, IController, Request, Response };
+export type { Constructor, Context, Params, StringRouterMiddleware, Void };

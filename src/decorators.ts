@@ -15,7 +15,7 @@ export function Controller(path: string) {
 
 export function Endpoint(method: HTTPMethods, path: string) {
   return function (
-	// deno-lint-ignore no-explicit-any
+    // deno-lint-ignore no-explicit-any
     target: Record<string, any>,
     key: string,
     descriptor: PropertyDescriptor,
@@ -39,7 +39,7 @@ export function Endpoint(method: HTTPMethods, path: string) {
 */
 
 export function Optional() {
-	// deno-lint-ignore no-explicit-any
+  // deno-lint-ignore no-explicit-any
   return function (target: Record<string, any>, propertyKey: string) {
     target.constructor.prototype.optionals =
       target.constructor.prototype.optionals || [];
