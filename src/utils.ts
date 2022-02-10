@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { Constructor, Request, Response } from "./types.ts";
 
 /** ========================================================================
@@ -12,56 +13,80 @@ import { Constructor, Request, Response } from "./types.ts";
  * @returns The mapped DTO
  */
 export async function bodyMappingJSON<TModel>(
-  request: Request,
-  dtoType: Constructor<TModel>,
+	request: Request,
+	dtoType: Constructor<TModel>,
 ): Promise<TModel> {
-  const parsed = await request.body({ type: "json" }).value;
-  const diff = difference(parsed, dtoType);
-  if (!diff.matching) {
-    throw new Error(
-      "Invalid request body, expected " + dtoType.name + " DTO." +
-        (diff.missing.length > 0
-          ? ` Missing fields: ${diff.missing.join(", ")}.`
-          : "") +
-        (diff.invalid.length > 0
-          ? ` Invalid fields: ${diff.invalid.join(", ")}.`
-          : ""),
-    );
-  }
-  return parsed as TModel;
+	const parsed = await request.body({ type: "json" }).value;
+	return mapping(parsed, dtoType);
+}
+export async function bodyMappingForm<TModel>(
+	request: Request,
+	dtoType: Constructor<TModel>,
+): Promise<TModel> {
+	const parsed = await request.body({ type: "form" }).value;
+	return mapping(paramsToObject(parsed), dtoType);
+}
+export async function bodyMappingFormData<TModel>(
+	request: Request,
+	dtoType: Constructor<TModel>,
+): Promise<TModel> {
+	const parsed = await request.body({ type: "form-data" }).value.read();
+	return mapping(parsed.fields, dtoType);
+}
+function paramsToObject(entries: URLSearchParams) {
+	const result: Record<string, any> = {}
+	for (const [key, value] of entries) {
+		result[key] = value;
+	}
+	return result;
+}
+
+function mapping<T>(data: Record<string, any>, type: Constructor<T>): T {
+	const diff = difference(data, type);
+	if (!diff.matching) {
+		throw new Error(
+			"Invalid request body, expected " + type.name + " DTO." +
+			(diff.missing.length > 0
+				? ` Missing fields: ${diff.missing.join(", ")}.`
+				: "") +
+			(diff.invalid.length > 0
+				? ` Invalid fields: ${diff.invalid.join(", ")}.`
+				: ""),
+		);
+	}
+	return data as T;
 }
 
 function difference<TModel>(
-  // deno-lint-ignore no-explicit-any
-  json: Record<string, any>,
-  dtoType: Constructor<TModel>,
+	json: Record<string, any>,
+	dtoType: Constructor<TModel>,
 ): { matching: boolean; missing: string[]; invalid: string[] } {
-  const jsonKeys = Object.keys(json);
-  const dtoFields = classFields(dtoType);
-  const missing = dtoFields.filter((field) =>
-    !jsonKeys.includes(field.name) && !field.optional
-  ).map((field) => field.name);
-  const invalid = jsonKeys.filter((key) =>
-    !dtoFields.find((field) => field.name === key)
-  );
-  return {
-    matching: missing.length === 0 && invalid.length === 0,
-    missing,
-    invalid,
-  };
+	const jsonKeys = Object.keys(json);
+	const dtoFields = classFields(dtoType);
+	const missing = dtoFields.filter((field) =>
+		!jsonKeys.includes(field.name) && !field.optional
+	).map((field) => field.name);
+	const invalid = jsonKeys.filter((key) =>
+		!dtoFields.find((field) => field.name === key)
+	);
+	return {
+		matching: missing.length === 0 && invalid.length === 0,
+		missing,
+		invalid,
+	};
 }
 
 function classFields<T>(
-  classType: Constructor<T>,
+	classType: Constructor<T>,
 ): { name: string; optional: boolean }[] {
-  const t = classType.toString();
-  const optionals: string[] = classType.prototype.optionals ?? [];
-  const fields = t.substring(t.indexOf("{") + 1, t.indexOf("constructor"))
-    .split(";").map((s) => s.trim()).filter((s) => s.length > 0).map((f) => ({
-      name: f,
-      optional: optionals.includes(f),
-    }));
-  return fields;
+	const t = classType.toString();
+	const optionals: string[] = classType.prototype.optionals ?? [];
+	const fields = t.substring(t.indexOf("{") + 1, t.indexOf("constructor"))
+		.split(";").map((s) => s.trim()).filter((s) => s.length > 0).map((f) => ({
+			name: f,
+			optional: optionals.includes(f),
+		}));
+	return fields;
 }
 
 /** ========================================================================
@@ -74,12 +99,11 @@ function classFields<T>(
  * @param body The body to send back
  */
 export function ok(
-  response: Response,
-  // deno-lint-ignore no-explicit-any
-  body: string | Record<string, any>,
+	response: Response,
+	body: string | Record<string, any>,
 ): void {
-  response.status = 200;
-  response.body = body;
+	response.status = 200;
+	response.body = body;
 }
 
 /**
@@ -88,10 +112,9 @@ export function ok(
  * @param body The body to send back
  */
 export function created(
-  response: Response,
-  // deno-lint-ignore no-explicit-any
-  body: string | Record<string, any>,
+	response: Response,
+	body: string | Record<string, any>,
 ): void {
-  response.status = 201;
-  response.body = body;
+	response.status = 201;
+	response.body = body;
 }
