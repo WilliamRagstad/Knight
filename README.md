@@ -2,7 +2,7 @@
 	<table>
 	<tbody>
 	<td>
-	<img src="assets/logo.png" width="150px">
+	<img src="https://raw.githubusercontent.com/WilliamRagstad/Knight/main/assets/logo.png" width="150px">
 	</td>
 	<td>
 	<h1>Knight</h1>
@@ -13,12 +13,14 @@
 	</td>
 	</tbody>
 	</table>
-	<img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/WilliamRagstad/Knight/Deno?style=flat-square">
-	<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-	<img alt="All Contributors" src="https://img.shields.io/badge/all_contributors-1-g.svg?style=flat-square"/>
-	<!-- ALL-CONTRIBUTORS-BADGE:END -->
-	<img alt="GitHub release" src="https://img.shields.io/github/release/WilliamRagstad/Knight?style=flat-square"/>
-	<img alt="Deno" src="https://img.shields.io/badge/deno-1.18.0+-green.svg?style=flat-square"/>
+	<p>
+		<img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/WilliamRagstad/Knight/Deno?style=flat-square">
+		<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+		<img alt="All Contributors" src="https://img.shields.io/badge/all_contributors-1-g.svg?style=flat-square"/>
+		<!-- ALL-CONTRIBUTORS-BADGE:END -->
+		<img alt="GitHub release" src="https://img.shields.io/github/release/WilliamRagstad/Knight?style=flat-square"/>
+		<img alt="Deno" src="https://img.shields.io/badge/deno-1.18.0+-green.svg?style=flat-square"/>
+	</p>
 </div>
 
 ## About
