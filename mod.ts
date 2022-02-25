@@ -7,6 +7,8 @@ export {
   accepted,
   badGateway,
   badRequest,
+  bodyMappingForm,
+  bodyMappingFormData,
   bodyMappingJSON,
   created,
   found,
