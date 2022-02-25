@@ -167,7 +167,7 @@ export class Knight {
 
     // Register all controllers
     const controllers = await this.findLocalControllersIn(Deno.cwd());
-    console.log(`Found ${controllers.length} controllers:`, controllers);
+    if (this._mode == AppMode.DEV) console.log(`Found ${controllers.length} controllers:`, controllers);
     this.registerRouter(router, controllers);
 
     app.use(router.routes());
