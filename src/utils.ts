@@ -5,6 +5,22 @@ import { Constructor, Request, Response } from "./types.ts";
  *                           Request helpers
  * ========================================================================* */
 
+export async function bodyText(request: Request): Promise<string> {
+  return await request.body({ type: "text" }).value;
+}
+
+export async function bodyBytes(request: Request): Promise<Uint8Array> {
+  return await request.body({ type: "bytes" }).value;
+}
+
+export async function bodyStream(request: Request): Promise<ReadableStream<Uint8Array>> {
+  return await request.body({ type: "stream" }).value;
+}
+
+export async function bodyAny(request: Request): Promise<any> {
+  return await request.body({ type: "undefined" }).value;
+}
+
 /**
  * Extracts the body of a request as JSON and maps it to the given class.
  * @param request The request object to parse the body from
