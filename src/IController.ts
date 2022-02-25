@@ -3,6 +3,8 @@ import { Context, Void } from "./types.ts";
 export default abstract class IController {
   path = "/";
 
+  constructor() {}
+
   /**
    * METHOD GET /
    * @description Fetch all instances of the relevant model
