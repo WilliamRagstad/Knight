@@ -41,22 +41,22 @@ latest version of the `Knight` module. Now either let Knight create a new server
 instance, or use an existing Oak application. In the example below we will use
 the former.
 
+<br/>
+
 `/index.ts`
 
 ```ts
 import { Knight } from "https://deno.land/x/knight/mod.ts";
-import UserController from "./controller/UserController.ts";
 
-const app = Knight.createApi([
-  new UserController(),
-]);
+const app = await Knight.build();
 
 console.log("Server ready on http://localhost:8000");
 await app.listen({ port: 8000 });
 ```
 
-In this introduction, we will use the `UserController` class from the example
-above.
+In this introduction, the `Knight.build()` function will find and use the `UserController` class from an example below.
+
+<br/>
 
 > ### Project Structure
 >
@@ -70,12 +70,17 @@ above.
 > │   └── User.ts
 > ├── index.ts
 > ```
+> All files named `*Controller.ts` are automatically found and used by the framework.
+
+<br/>
 
 Now let's create the `UserController` class. By default the framework provides a
 `IController` class, which is a base class for all controllers and provides a
 set of overloadable methods that are common to all controllers. Such methods
 include `get`, `getById`, `post`, `delete` and `put`. Though you can easily
 define your own custom endpoints using the `@Endpoint` decorator.
+
+<br/>
 
 `/controller/UserController.ts`
 
@@ -95,6 +100,7 @@ import User from "../model/User.ts";
 
 @Controller("/user")
 export default class UserController extends IController {
+
   async post({ request, response }: Context): Promise<void> {
     const user = await bodyMappingJSON(request, User);
     created(response, `User ${user.firstName} was successfully created`);
@@ -105,8 +111,11 @@ export default class UserController extends IController {
     const email = id + "@example.com";
     ok(response, `User with email ${email} was successfully found`);
   }
+
 }
 ```
+
+<br/>
 
 The controller class is responsible for handling all requests to the endpoint.
 Knight comes with a set of built-in mapping functions that can be used to handle
@@ -119,12 +128,15 @@ Creating a model class is as easy as defining a regular class. Mark nullable, or
 optional properties with the `?` symbol and the `@Optional` decorator to signify
 that the property is optional to body mapping functions.
 
+<br/>
+
 `/model/User.ts`
 
 ```ts
 import { Optional } from "../../mod.ts";
 
 export default class User {
+
   firstName: string;
   lastName: string;
   email: string;
@@ -150,8 +162,11 @@ export default class User {
     this.city = city;
     this.phone = phone;
   }
+
 }
 ```
+
+<br/>
 
 > View the source code for this example code on
 > [GitHub](https://github.com/WilliamRagstad/Knight/example).
