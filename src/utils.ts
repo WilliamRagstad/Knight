@@ -13,7 +13,9 @@ export async function bodyBytes(request: Request): Promise<Uint8Array> {
   return await request.body({ type: "bytes" }).value;
 }
 
-export async function bodyStream(request: Request): Promise<ReadableStream<Uint8Array>> {
+export async function bodyStream(
+  request: Request,
+): Promise<ReadableStream<Uint8Array>> {
   return await request.body({ type: "stream" }).value;
 }
 
