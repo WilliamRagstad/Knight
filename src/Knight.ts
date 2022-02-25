@@ -180,7 +180,7 @@ export class Knight {
   /**
    * Find all controllers in the local project
    */
-  static async findLocalControllersIn(directory: string) {
+  private static async findLocalControllersIn(directory: string) {
     const controllers: IController[] = [];
     for await (const file of Deno.readDir(directory)) {
       const path = `${directory}/${file.name}`;
