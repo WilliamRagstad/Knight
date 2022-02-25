@@ -54,7 +54,7 @@ export class Knight {
   /**
    * Register a list of controllers
    */
-  public static registerRouter(
+  private static registerRouter(
     router: Router<Record<string, any>>,
     controllers: IController[],
   ) {
@@ -133,6 +133,8 @@ export class Knight {
   }
 
   /**
+   * @deprecated Use Knight.build() instead
+   *
    * Register a list of controllers
    */
   public static registerApp(app: Application, controllers: IController[]) {
@@ -143,6 +145,8 @@ export class Knight {
   }
 
   /**
+   * @deprecated Use Knight.build() instead
+   *
    * Register a list of controllers and create a new web server
    * @param controllers List of controllers to register
    * @returns A web server that can be started
@@ -151,5 +155,56 @@ export class Knight {
     const app = new Application();
     this.registerApp(app, controllers);
     return app;
+  }
+
+  /**
+   * create a new web server and connect controllers in the local project.
+   * @returns A web server that can be started
+   */
+  public static async build() {
+    const app = new Application();
+    const router = new Router();
+
+    // Register all controllers
+    const controllers = await this.findLocalControllersIn(Deno.cwd());
+    console.log(`Found ${controllers.length} controllers:`, controllers);
+    this.registerRouter(router, controllers);
+
+    app.use(router.routes());
+    app.use(router.allowedMethods());
+
+    return app;
+  }
+
+
+  /**
+   * Find all controllers in the local project
+   */
+  static async findLocalControllersIn(directory: string) {
+    const controllers: IController[] = [];
+    for await (const file of Deno.readDir(directory)) {
+      const path = `${directory}/${file.name}`;
+      if (file.isDirectory) {
+        const subControllers = await this.findLocalControllersIn(path);
+        controllers.push(...subControllers);
+      } else if (file.isFile && file.name.endsWith("Controller.ts")) {
+        const module = await import(`file://${path}`);
+        const defaultController = module.default;
+        // Check that the default controller implements IController
+        // console.log(module, defaultController);
+        if (defaultController && defaultController.prototype && defaultController.prototype.constructor) {
+          // Instantiate the default controller
+          const c = new (defaultController)();
+          if (c instanceof IController) {
+            controllers.push(c);
+          } else {
+            console.error(`Controller ${file.name} does not implement IController`);
+          }
+        } else {
+          console.warn(`${path} does not export a valid default controller!`);
+        }
+      }
+    }
+    return controllers;
   }
 }
