@@ -3,6 +3,25 @@ export type { Context, Params } from "./src/types.ts";
 
 export { Knight } from "./src/Knight.ts";
 
-export { bodyMappingJSON, created, ok } from "./src/utils.ts";
+export {
+  accepted,
+  badGateway,
+  badRequest,
+  bodyMappingJSON,
+  created,
+  found,
+  im_a_teapot,
+  internalServerError,
+  noContent,
+  notAcceptable,
+  notFound,
+  notImplemented,
+  ok,
+  redirect,
+  redirectPerm,
+  redirectTemp,
+  serviceUnavailable,
+  unauthorized,
+} from "./src/utils.ts";
 
 export { Controller, Endpoint, Optional } from "./src/decorators.ts";
