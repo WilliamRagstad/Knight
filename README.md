@@ -31,6 +31,7 @@ routing stack, to allow for automatic endpoint generation.
 Focus on what you want to do, and the framework will take care of the rest.
 
 ## Documentation
+
 > ### View the full [technical documentation](https://doc.deno.land/https://deno.land/x/knight/mod.ts).
 
 ## Getting Started
@@ -77,6 +78,7 @@ include `get`, `getById`, `post`, `delete` and `put`. Though you can easily
 define your own custom endpoints using the `@Endpoint` decorator.
 
 `/controller/UserController.ts`
+
 ```ts
 import {
   bodyMappingJSON,
@@ -107,13 +109,18 @@ export default class UserController extends IController {
 ```
 
 The controller class is responsible for handling all requests to the endpoint.
-Knight comes with a set of built-in mapping functions that can be used to handle request of different DTO classes.
-One of these functions is `bodyMappingJSON`. This function takes a request and a class and returns the parsed body as an instance of the class. In the example above, the request body is parsed as a JSON object and returned as an instance of the `User` class.
+Knight comes with a set of built-in mapping functions that can be used to handle
+request of different DTO classes. One of these functions is `bodyMappingJSON`.
+This function takes a request and a class and returns the parsed body as an
+instance of the class. In the example above, the request body is parsed as a
+JSON object and returned as an instance of the `User` class.
 
-Creating a model class is as easy as defining a regular class.
-Mark nullable, or optional properties with the `?` symbol and the `@Optional` decorator to signify that the property is optional to body mapping functions.
+Creating a model class is as easy as defining a regular class. Mark nullable, or
+optional properties with the `?` symbol and the `@Optional` decorator to signify
+that the property is optional to body mapping functions.
 
 `/model/User.ts`
+
 ```ts
 import { Optional } from "../../mod.ts";
 
@@ -146,9 +153,8 @@ export default class User {
 }
 ```
 
-> View the source code for this example code on [GitHub](https://github.com/WilliamRagstad/Knight/example).
-
-
+> View the source code for this example code on
+> [GitHub](https://github.com/WilliamRagstad/Knight/example).
 
 ## Endpoints
 
@@ -162,18 +168,25 @@ These methods are:
 - `delete(id: string, ctx: Context): void | Promise<void>`
 - `put(id: string, ctx: Context): void | Promise<void>`
 
-All of these methods are overloaded to accept a `Context` object, which is a type provided by Knight to allow for easy access to the request and response objects. As well as the `Params` object for custom `@Endpoint` methods, which contains the parameters passed to the endpoint.
+All of these methods are overloaded to accept a `Context` object, which is a
+type provided by Knight to allow for easy access to the request and response
+objects. As well as the `Params` object for custom `@Endpoint` methods, which
+contains the parameters passed to the endpoint.
 
-All of these have full support for asynchronous alternatives, which means that you can use `async`/`await` and return a `Promise` from the controller method and the framework will adapt the response accordingly.
-
+All of these have full support for asynchronous alternatives, which means that
+you can use `async`/`await` and return a `Promise` from the controller method
+and the framework will adapt the response accordingly.
 
 ## Contribute
-All contributions are welcome!
-Create an issue or pull request on [GitHub](https://github.com/WilliamRagstad/Knight) to help us improve the framework.
+
+All contributions are welcome! Create an issue or pull request on
+[GitHub](https://github.com/WilliamRagstad/Knight) to help us improve the
+framework.
 
 ## Contributors ✨
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks goes to these wonderful people
+([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -189,4 +202,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the
+[all-contributors](https://github.com/all-contributors/all-contributors)
+specification. Contributions of any kind welcome!
