@@ -175,6 +175,7 @@ export default class User {
 ## Example
 
 Run the example project by running the following command in the project root:
+
 ```bash
 > deno run -A --unstable example/index.ts
 ```
