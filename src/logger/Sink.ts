@@ -53,5 +53,6 @@ export abstract class Sink {
    * Logs the given message to the sink.
    * @param message The message to log.
    */
-  public abstract log(message: string, level: LoggingLevel): void;
+  // deno-lint-ignore no-explicit-any
+  public abstract log(data: any[], level: LoggingLevel): void;
 }
