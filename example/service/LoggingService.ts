@@ -1,12 +1,12 @@
 import { ConsoleSink, FileSink, Logger, LoggingLevel } from "../../mod.ts";
 
-export default class LoggerService {
-  private static _instance: LoggerService;
-  public static get instance(): LoggerService {
-    if (!LoggerService._instance) {
-      LoggerService._instance = new LoggerService();
+export default class LoggingService {
+  private static _instance: LoggingService;
+  public static get instance(): LoggingService {
+    if (!LoggingService._instance) {
+      LoggingService._instance = new LoggingService();
     }
-    return LoggerService._instance;
+    return LoggingService._instance;
   }
 
   constructor() {
