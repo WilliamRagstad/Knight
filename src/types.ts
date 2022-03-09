@@ -8,7 +8,7 @@ import {
   RouterMiddleware,
 } from "https://deno.land/x/oak/mod.ts";
 
-import IController from "./IController.ts";
+import { IController } from "./IController.ts";
 
 type Constructor<T> = new (...args: any[]) => T;
 

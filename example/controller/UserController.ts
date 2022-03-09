@@ -16,7 +16,7 @@ import LoggingService from "../service/LoggingService.ts";
 
 @Controller("/user")
 export default class UserController extends IController {
-  private log: Logger = LoggingService.instance.logger;
+  private log: Logger = LoggingService.instance().logger;
 
   constructor() {
     super();
