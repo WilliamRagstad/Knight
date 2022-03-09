@@ -55,12 +55,15 @@ export function Optional() {
 */
 
 export function Service<T>(target: Constructor<T>) {
-    const singletonTarget = target as unknown as Constructor<T> & { instance: () => T, _instance: T };
-    singletonTarget.instance = () => {
-      if (!singletonTarget._instance) {
-        singletonTarget._instance = new target();
-      }
-      return singletonTarget._instance;
-    };
-    return singletonTarget;
+  const singletonTarget = target as unknown as Constructor<T> & {
+    instance: () => T;
+    _instance: T;
   };
+  singletonTarget.instance = () => {
+    if (!singletonTarget._instance) {
+      singletonTarget._instance = new target();
+    }
+    return singletonTarget._instance;
+  };
+  return singletonTarget;
+}

@@ -1,6 +1,10 @@
 import { Sink } from "./Sink.ts";
 import { ColorOptions, LoggingFormatter, LoggingLevel } from "../types.ts";
-import { defaultColorOptions, defaultTimestamp, textFormatter } from "./defaults.ts";
+import {
+  defaultColorOptions,
+  defaultTimestamp,
+  textFormatter,
+} from "./defaults.ts";
 
 /**
  * A console sink that writes to the terminal using a set of colors.
@@ -33,7 +37,7 @@ export class ConsoleSink extends Sink {
       level: level,
       timestamp: defaultTimestamp(),
       levelColorFunction: colorFunction,
-      colorsEnabled: this._enableColors
+      colorsEnabled: this._enableColors,
     });
     switch (level) {
       case LoggingLevel.Log:

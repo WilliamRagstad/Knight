@@ -46,7 +46,7 @@ export class Logger {
    * Logs a message at the `Debug` level.
    * @param data Values to log.
    */
-   public success(...data: any[]): void {
+  public success(...data: any[]): void {
     this._log(data, LoggingLevel.Success);
   }
 
