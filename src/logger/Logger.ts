@@ -14,63 +14,71 @@ export class Logger {
     return this;
   }
 
-  private _log(args: any[], level: LoggingLevel): void {
-    this._sinks.forEach((sink) => sink.log(args.join(" "), level));
+  private _log(data: any[], level: LoggingLevel): void {
+    this._sinks.forEach((sink) => sink.log(data, level));
   }
 
   /**
    * Logs a message at the lowest `Log` level.
-   * @param args Values to log.
+   * @param data Values to log.
    */
-  public log(...args: any[]): void {
-    this._log(args, LoggingLevel.Log);
-  }
-
-  /**
-   * Logs a message at the `Info` level.
-   * @param args Values to log.
-   */
-  public info(...args: any[]): void {
-    this._log(args, LoggingLevel.Info);
+  public log(...data: any[]): void {
+    this._log(data, LoggingLevel.Log);
   }
 
   /**
    * Logs a message at the `Debug` level.
-   * @param args Values to log.
+   * @param data Values to log.
    */
-  public debug(...args: any[]): void {
-    this._log(args, LoggingLevel.Debug);
+  public debug(...data: any[]): void {
+    this._log(data, LoggingLevel.Debug);
+  }
+
+  /**
+   * Logs a message at the `Info` level.
+   * @param data Values to log.
+   */
+  public info(...data: any[]): void {
+    this._log(data, LoggingLevel.Info);
+  }
+
+  /**
+   * Logs a message at the `Debug` level.
+   * @param data Values to log.
+   */
+   public success(...data: any[]): void {
+    this._log(data, LoggingLevel.Success);
   }
 
   /**
    * Logs a message at the `Warning` level.
-   * @param args Values to log.
+   * @param data Values to log.
    */
-  public warn(...args: any[]): void {
-    this._log(args, LoggingLevel.Warning);
+  public warn(...data: any[]): void {
+    this._log(data, LoggingLevel.Warning);
   }
 
   /**
    * Logs a message at the `Error` level.
-   * @param args Values to log.
+   * @param data Values to log.
    */
-  public error(...args: any[]): void {
-    this._log(args, LoggingLevel.Error);
+  public error(...data: any[]): void {
+    this._log(data, LoggingLevel.Error);
   }
 
   /**
    * Logs a message at the `Critical` level.
-   * @param args Values to log.
+   * @param data Values to log.
    */
-  public critical(...args: any[]): void {
-    this._log(args, LoggingLevel.Critical);
+  public critical(...data: any[]): void {
+    this._log(data, LoggingLevel.Critical);
   }
 
   /**
    * Logs a message at the `Fatal` level.
-   * @param args Values to log.
+   * @param data Values to log.
    */
-  public fatal(...args: any[]): void {
-    this._log(args, LoggingLevel.Fatal);
+  public fatal(...data: any[]): void {
+    this._log(data, LoggingLevel.Fatal);
   }
 }
