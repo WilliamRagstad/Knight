@@ -59,14 +59,25 @@ export const defaultTimestamp = (): string => {
  * @returns The formatted data as text
  */
 export const textFormatter: LoggingFormatter = (
-  { message, level, timestamp },
-) => `${timestamp} [${level}] ${message}`;
+  { data, level, timestamp, colorsEnabled, levelColorFunction },
+) => {
+  return colorsEnabled
+    ? (
+      (levelColorFunction ?? identityColorFunction)(
+        `[${timestamp} | ${LoggingLevel[level]}] ${bold(data.join(" "))}`,
+      )
+    )
+    : (
+      `[${timestamp} | ${LoggingLevel[level]}] ${data.join(" ")}`
+    );
+};
 
 /**
  * Format a message as JSON of the form `{"message": MESSAGE, "level": LEVEL, "time": TIME}`.
+ * Colors are not supported.
  * @param data The data to format
  * @returns The formatted data as JSON
  */
 export const jsonFormatter: LoggingFormatter = (
-  { message, level, timestamp },
-) => JSON.stringify({ message, level, timestamp });
+  { data, level, timestamp },
+) => JSON.stringify({ message: data.join(" "), level, timestamp, data });

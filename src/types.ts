@@ -81,9 +81,18 @@ type ColorOptions = {
  * A function that formats a log message.
  */
 type LoggingFormatterData = {
-  message: string;
   level: LoggingLevel;
   timestamp: string;
+  data: any[];
+  /**
+   * Whether or not the message should be colored.
+   */
+  colorsEnabled: boolean;
+  /**
+   * A function that returns a colorized string.
+   * If not provided, the default color function will be used.
+   */
+  levelColorFunction?: ColorFunction;
 };
 
 /**
@@ -92,6 +101,7 @@ type LoggingFormatterData = {
 type LoggingFormatter = (data: LoggingFormatterData) => string;
 
 export { AppMode, IController, LoggingLevel, Request, Response };
+
 export type {
   ColorFunction,
   ColorOptions,
