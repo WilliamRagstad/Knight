@@ -233,7 +233,6 @@ export default Service(
     }
   },
 );
-
 ```
 
 And now we can use the service in our controller.
