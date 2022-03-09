@@ -46,4 +46,4 @@ export {
   unauthorized,
 } from "./src/utils.ts";
 
-export { Controller, Endpoint, Optional } from "./src/decorators.ts";
+export { Controller, Endpoint, Optional, Service } from "./src/decorators.ts";
