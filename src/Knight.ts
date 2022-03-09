@@ -97,7 +97,7 @@ export class Knight {
           const handler = endpoint
             .handler as ((params: Params, ctx: Context) => Void);
           const wrapper = this.endpointHandler((ctx) =>
-            handler(ctx.params, ctx)
+            handler.call(controller, ctx.params, ctx)
           );
           switch (method) {
             case "GET":
