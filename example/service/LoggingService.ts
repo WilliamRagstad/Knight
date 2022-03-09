@@ -1,14 +1,13 @@
-import { ConsoleSink, FileSink, Logger, LoggingLevel } from "../../mod.ts";
+import {
+  ConsoleSink,
+  FileSink,
+  Logger,
+  LoggingLevel,
+  Service,
+} from "../../mod.ts";
 
-export default class LoggingService {
-  private static _instance: LoggingService;
-  public static get instance(): LoggingService {
-    if (!LoggingService._instance) {
-      LoggingService._instance = new LoggingService();
-    }
-    return LoggingService._instance;
-  }
 
+export default Service(class LoggingService {
   constructor() {
     this.logger = new Logger()
       .attach(new ConsoleSink())
@@ -18,4 +17,4 @@ export default class LoggingService {
   }
 
   public logger: Logger;
-}
+})
