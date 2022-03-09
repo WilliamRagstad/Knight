@@ -8,7 +8,7 @@ import {
   RouterMiddleware,
 } from "https://deno.land/x/oak/mod.ts";
 
-import IController from "./IController.ts";
+import { IController } from "./IController.ts";
 
 type Constructor<T> = new (...args: any[]) => T;
 
@@ -100,7 +100,7 @@ type LoggingFormatterData = {
  */
 type LoggingFormatter = (data: LoggingFormatterData) => string;
 
-export { AppMode, IController, LoggingLevel, Request, Response };
+export { AppMode, IController, IService, LoggingLevel, Request, Response };
 
 export type {
   ColorFunction,

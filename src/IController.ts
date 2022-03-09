@@ -1,6 +1,6 @@
 import { Context, Void } from "./types.ts";
 
-export default abstract class IController {
+export abstract class IController {
   path = "/";
 
   constructor() {}
