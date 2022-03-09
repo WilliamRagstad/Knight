@@ -44,11 +44,71 @@ enum AppMode {
   PROD,
 }
 
-export { AppMode, IController, Request, Response };
+/**
+ * The logging levels of a log message.
+ */
+enum LoggingLevel {
+  Log,
+  Debug,
+  Info,
+  Success,
+  Warning,
+  Error,
+  Critical,
+  Fatal,
+}
+
+/**
+ * Format a string using the standard library `std/fmt/colors.ts` or custom function.
+ */
+type ColorFunction = (s: string) => string;
+
+/**
+ * Formatting functions for the `LoggingLevel` enum.
+ */
+type ColorOptions = {
+  log: ColorFunction;
+  debug: ColorFunction;
+  info: ColorFunction;
+  success: ColorFunction;
+  warn: ColorFunction;
+  error: ColorFunction;
+  critical: ColorFunction;
+  fatal: ColorFunction;
+} & Record<string, ColorFunction>;
+
+/**
+ * A function that formats a log message.
+ */
+type LoggingFormatterData = {
+  level: LoggingLevel;
+  timestamp: string;
+  data: any[];
+  /**
+   * Whether or not the message should be colored.
+   */
+  colorsEnabled: boolean;
+  /**
+   * A function that returns a colorized string.
+   * If not provided, the default color function will be used.
+   */
+  levelColorFunction?: ColorFunction;
+};
+
+/**
+ * A function that takes a message and returns a formatted string.
+ */
+type LoggingFormatter = (data: LoggingFormatterData) => string;
+
+export { AppMode, IController, LoggingLevel, Request, Response };
+
 export type {
+  ColorFunction,
+  ColorOptions,
   Constructor,
   Context,
   HTTPMethods,
+  LoggingFormatter,
   Params,
   StringRouterMiddleware,
   Void,

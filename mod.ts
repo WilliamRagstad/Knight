@@ -8,6 +8,16 @@ export {
 export type { Context, Params } from "./src/types.ts";
 
 export { Knight } from "./src/Knight.ts";
+export { Logger } from "./src/logger/Logger.ts";
+export { Sink } from "./src/logger/Sink.ts";
+export { ConsoleSink } from "./src/logger/ConsoleSink.ts";
+export { FileSink } from "./src/logger/FileSink.ts";
+export {
+  defaultTimestamp,
+  isoTimestamp,
+  jsonFormatter,
+  textFormatter,
+} from "./src/logger/defaults.ts";
 
 export {
   accepted,
