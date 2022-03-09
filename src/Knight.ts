@@ -167,7 +167,9 @@ export class Knight {
 
     // Register all controllers
     const controllers = await this.findLocalControllersIn(Deno.cwd());
-    if (this._mode == AppMode.DEV) console.log(`Found ${controllers.length} controllers:`, controllers);
+    if (this._mode == AppMode.DEV) {
+      console.log(`Found ${controllers.length} controllers:`, controllers);
+    }
     this.registerRouter(router, controllers);
 
     app.use(router.routes());
@@ -175,7 +177,6 @@ export class Knight {
 
     return app;
   }
-
 
   /**
    * Find all controllers in the local project
@@ -192,13 +193,18 @@ export class Knight {
         const defaultController = module.default;
         // Check that the default controller implements IController
         // console.log(module, defaultController);
-        if (defaultController && defaultController.prototype && defaultController.prototype.constructor) {
+        if (
+          defaultController && defaultController.prototype &&
+          defaultController.prototype.constructor
+        ) {
           // Instantiate the default controller
           const c = new (defaultController)();
           if (c instanceof IController) {
             controllers.push(c);
           } else {
-            console.error(`Controller ${file.name} does not implement IController`);
+            console.error(
+              `Controller ${file.name} does not implement IController`,
+            );
           }
         } else {
           console.warn(`${path} does not export a valid default controller!`);

@@ -1,4 +1,10 @@
-export { AppMode, IController, Request, Response } from "./src/types.ts";
+export {
+  AppMode,
+  IController,
+  LoggingLevel,
+  Request,
+  Response,
+} from "./src/types.ts";
 export type { Context, Params } from "./src/types.ts";
 
 export { Knight } from "./src/Knight.ts";

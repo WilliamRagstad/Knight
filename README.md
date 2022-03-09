@@ -56,7 +56,8 @@ console.log("Server ready on http://localhost:8000");
 await app.listen({ port: 8000 });
 ```
 
-In this introduction, the `Knight.build()` function will find and use the `UserController` class from an example below.
+In this introduction, the `Knight.build()` function will find and use the
+`UserController` class from an example below.
 
 <br/>
 
@@ -72,7 +73,9 @@ In this introduction, the `Knight.build()` function will find and use the `UserC
 > │   └── User.ts
 > ├── index.ts
 > ```
-> All files named `*Controller.ts` are automatically found and used by the framework.
+>
+> All files named `*Controller.ts` are automatically found and used by the
+> framework.
 
 <br/>
 
@@ -102,7 +105,6 @@ import User from "../model/User.ts";
 
 @Controller("/user")
 export default class UserController extends IController {
-
   async post({ request, response }: Context): Promise<void> {
     const user = await bodyMappingJSON(request, User);
     created(response, `User ${user.firstName} was successfully created`);
@@ -113,7 +115,6 @@ export default class UserController extends IController {
     const email = id + "@example.com";
     ok(response, `User with email ${email} was successfully found`);
   }
-
 }
 ```
 
@@ -138,7 +139,6 @@ that the property is optional to body mapping functions.
 import { Optional } from "../../mod.ts";
 
 export default class User {
-
   firstName: string;
   lastName: string;
   email: string;
@@ -164,7 +164,6 @@ export default class User {
     this.city = city;
     this.phone = phone;
   }
-
 }
 ```
 
