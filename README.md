@@ -249,9 +249,19 @@ export default class UserController extends IController {
 }
 ```
 
+<br/>
+<br/>
+<hr>
+<br/>
+<br/>
+
+## Consider contributing! 🚀
+
 All contributions are welcome! Create an issue or pull request on
 [GitHub](https://github.com/WilliamRagstad/Knight) to help us improve the
 framework.
+
+<br/>
 
 ## Contributors ✨
 
