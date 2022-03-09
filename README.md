@@ -136,7 +136,7 @@ that the property is optional to body mapping functions.
 `/model/User.ts`
 
 ```ts
-import { Optional } from "../../mod.ts";
+import { Optional } from "https://deno.land/x/knight/mod.ts";
 
 export default class User {
   firstName: string;
@@ -201,7 +201,53 @@ All of these have full support for asynchronous alternatives, which means that
 you can use `async`/`await` and return a `Promise` from the controller method
 and the framework will adapt the response accordingly.
 
-## Contribute
+## Services
+
+If we in the `UserController` class above, would like to use a service. We can
+create a service class and inject it into the controller as seen below.
+
+Let's create a logging service.
+
+`service/LoggingService.ts`
+
+```ts
+import {
+  ConsoleSink,
+  FileSink,
+  Logger,
+  LoggingLevel,
+  Service,
+} from "https://deno.land/x/knight/mod.ts";
+
+export default Service(
+  class LoggingService {
+    public logger: Logger;
+    constructor() {
+      this.logger = new Logger()
+        .attach(new ConsoleSink())
+        .attach(
+          new FileSink("./example/logs/log.txt").fromRange(
+            LoggingLevel.Success,
+          ),
+        );
+    }
+  },
+);
+
+```
+
+And now we can use the service in our controller.
+
+`controller/UserController.ts`
+
+```ts
+import LoggingService from "../service/LoggingService.ts";
+
+export default class UserController extends IController {
+  private log: Logger = LoggingService.instance().logger;
+  // ...
+}
+```
 
 All contributions are welcome! Create an issue or pull request on
 [GitHub](https://github.com/WilliamRagstad/Knight) to help us improve the
