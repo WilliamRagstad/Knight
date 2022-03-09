@@ -1,6 +1,6 @@
 import { Sink } from "./Sink.ts";
 import { ColorOptions, LoggingFormatter, LoggingLevel } from "../types.ts";
-import { defaultColorOptions, textFormatter } from "./defaults.ts";
+import { defaultColorOptions, defaultTimestamp, textFormatter } from "./defaults.ts";
 
 /**
  * A console sink that writes to the terminal using a set of colors.
@@ -24,39 +24,44 @@ export class ConsoleSink extends Sink {
     return this;
   }
 
-  public log(message: string, level: LoggingLevel): void {
+  // deno-lint-ignore no-explicit-any
+  public log(data: any[], level: LoggingLevel): void {
     if (!this.levels.includes(level)) return;
-    if (!this._enableColors) {
-      console.log(message);
-      return;
-    }
+    const colorFunction = this._colorOptions[LoggingLevel[level].toLowerCase()];
     const formatted = this.formatter({
-      message,
-      level,
-      timestamp: new Date().toISOString(),
+      data: data,
+      level: level,
+      timestamp: defaultTimestamp(),
+      levelColorFunction: colorFunction,
+      colorsEnabled: this._enableColors
     });
-    const colored = this._colorOptions[LoggingLevel[level].toLowerCase()](
-      formatted,
-    );
     switch (level) {
       case LoggingLevel.Log:
-        console.log(colored);
-        break;
-      case LoggingLevel.Info:
-        console.info(colored);
+        console.log(formatted);
         break;
       case LoggingLevel.Debug:
-        console.debug(colored);
+        console.debug(formatted);
+        break;
+      case LoggingLevel.Info:
+        console.info(formatted);
+        break;
+      case LoggingLevel.Success:
+        console.log(formatted);
         break;
       case LoggingLevel.Warning:
-        console.warn(colored);
+        console.warn(formatted);
         break;
       case LoggingLevel.Error:
-        console.error(colored);
+        console.error(formatted);
+        break;
+      case LoggingLevel.Critical:
+        console.error(formatted);
         break;
       case LoggingLevel.Fatal:
-        console.error(colored);
+        console.error(formatted);
         break;
+      default:
+        throw new Error("Unknown LoggingLevel " + level);
     }
   }
 }
