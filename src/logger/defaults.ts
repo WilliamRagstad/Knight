@@ -12,7 +12,6 @@ import {
   red,
   rgb24,
   white,
-  yellow,
 } from "https://deno.land/std@0.128.0/fmt/colors.ts";
 
 /**
@@ -23,7 +22,7 @@ export const defaultColorOptions: ColorOptions = {
   info: cyan,
   success: green,
   debug: gray,
-  warn: yellow,
+  warn: (s) => rgb24(s, { r: 255, g: 219, b: 88 }),
   error: red,
   critical: (s) => rgb24(s, { r: 255, g: 165, b: 0 }),
   fatal: red,
