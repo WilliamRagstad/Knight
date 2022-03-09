@@ -172,6 +172,13 @@ export default class User {
 > View the source code for this example code on
 > [GitHub](https://github.com/WilliamRagstad/Knight/example).
 
+## Example
+
+Run the example project by running the following command in the project root:
+```bash
+> deno run -A --unstable example/index.ts
+```
+
 ## Endpoints
 
 As described in the previous section, the framework provides a set of
