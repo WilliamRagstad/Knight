@@ -13,7 +13,7 @@ export default class LoggingService {
     this.logger = new Logger()
       .attach(new ConsoleSink())
       .attach(
-        new FileSink("logs/log.txt").fromRange(LoggingLevel.Log),
+        new FileSink("./example/logs/log.txt").fromRange(LoggingLevel.Success),
       );
   }
 
