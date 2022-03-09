@@ -1,5 +1,11 @@
-import { ColorOptions, LoggingFormatter } from "../types.ts";
 import {
+  ColorFunction,
+  ColorOptions,
+  LoggingFormatter,
+  LoggingLevel,
+} from "../types.ts";
+import {
+  bold,
   cyan,
   gray,
   green,
@@ -22,6 +28,30 @@ export const defaultColorOptions: ColorOptions = {
   critical: (s) => rgb24(s, { r: 255, g: 165, b: 0 }),
   fatal: red,
 };
+
+/**
+ * An identity function that returns the input string.
+ * @param s Any input string
+ * @returns The input string
+ */
+export const identityColorFunction: ColorFunction = (s) => s;
+
+/**
+ * The current timestamp in the international ISO standard for specifying dates.
+ * @returns The current timestamp
+ */
+export const isoTimestamp = (): string => new Date().toISOString();
+
+/**
+ *
+ * @returns
+ */
+export const defaultTimestamp = (): string => {
+	const full = isoTimestamp();
+	const date = full.substring(0, full.indexOf("T"));
+	const time = full.substring(full.indexOf("T") + 1, full.indexOf("."));
+	return `${date} ${time}`;
+}
 
 /**
  * Format a message as human readable text of the form `TIME [LEVEL] MESSAGE`.
