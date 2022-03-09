@@ -100,7 +100,7 @@ type LoggingFormatterData = {
  */
 type LoggingFormatter = (data: LoggingFormatterData) => string;
 
-export { AppMode, IController, IService, LoggingLevel, Request, Response };
+export { AppMode, IController, LoggingLevel, Request, Response };
 
 export type {
   ColorFunction,
