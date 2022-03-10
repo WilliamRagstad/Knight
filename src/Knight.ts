@@ -25,7 +25,7 @@ export class Knight {
     R extends string,
     P extends RouteParams<R> = RouteParams<R>,
     S extends State = Record<string, any>,
-  >(handler: RouterMiddleware<R, P, S>) {
+  >(thisArg: any, handler: RouterMiddleware<R, P, S>) {
     if (this._mode === AppMode.DEV) {
       // Return exception stack trace in development mode
       return async (
@@ -33,7 +33,7 @@ export class Knight {
         next: () => Promise<unknown>,
       ): Promise<void> => {
         try {
-          await handler(ctx, next);
+          await handler.call(thisArg, ctx, next);
         } catch (error) {
           ctx.response.status = 500;
           ctx.response.body = {
@@ -47,7 +47,7 @@ export class Knight {
       return async (
         ctx: RouterContext<R, P, S>,
         next: () => Promise<unknown>,
-      ): Promise<unknown> => await handler(ctx, next);
+      ): Promise<unknown> => await handler.call(thisArg, ctx, next);
     }
   }
 
@@ -62,27 +62,27 @@ export class Knight {
       const basePath: string = (controller as any).constructor.prototype.path ??
         "/"; // Default to root
       controller.get &&
-        router.get(basePath, this.endpointHandler(controller.get));
+        router.get(basePath, this.endpointHandler(controller, controller.get));
       controller.getById &&
         router.get(
           `${basePath}/:id`,
-          this.endpointHandler((ctx) =>
+          this.endpointHandler(controller, (ctx) =>
             controller.getById && controller.getById(ctx.params.id, ctx as any)
           ),
         );
       controller.post &&
-        router.post(basePath, this.endpointHandler(controller.post));
+        router.post(basePath, this.endpointHandler(controller, controller.post));
       controller.delete &&
         router.delete(
           `${basePath}/:id`,
-          this.endpointHandler((ctx) =>
+          this.endpointHandler(controller, (ctx) =>
             controller.delete && controller.delete(ctx.params.id, ctx as any)
           ),
         );
       controller.put &&
         router.put(
           `${basePath}/:id`,
-          this.endpointHandler((ctx) =>
+          this.endpointHandler(controller, (ctx) =>
             controller.put && controller.put(ctx.params.id, ctx as any)
           ),
         );
@@ -96,7 +96,7 @@ export class Knight {
           const method: HTTPMethods = endpoint.method.toUpperCase();
           const handler = endpoint
             .handler as ((params: Params, ctx: Context) => Void);
-          const wrapper = this.endpointHandler((ctx) =>
+          const wrapper = this.endpointHandler(controller, (ctx) =>
             handler.call(controller, ctx.params, ctx)
           );
           switch (method) {
