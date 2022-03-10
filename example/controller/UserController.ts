@@ -6,6 +6,7 @@ import {
   Endpoint,
   IController,
   internalServerError,
+  badRequest,
   Logger,
   ok,
   Params,
@@ -21,6 +22,13 @@ export default class UserController extends IController {
   constructor() {
     super();
     this.log.info("UserController was created");
+  }
+
+  get({ response }: Context): void {
+	this.log.info("Request to: GET /user");
+	const msg = "Cannot get all users";
+	badRequest(response, msg);
+	this.log.error(msg);
   }
 
   async post({ request, response }: Context): Promise<void> {
