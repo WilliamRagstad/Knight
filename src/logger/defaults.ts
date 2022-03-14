@@ -13,7 +13,7 @@ import {
   white,
   yellow,
 } from "https://deno.land/std@0.128.0/fmt/colors.ts";
-import { LevelColors, ParamColors, TextFormatter } from "./TextFormatter.ts";
+import { ColorFunction, LevelColors, ParamColors } from "./TextFormatter.ts";
 
 /**
  * Default color options for the `ConsoleSink` class.
@@ -29,6 +29,71 @@ export const defaultLevelColorOptions: LevelColors = {
   fatal: red,
 };
 
+function valueHRF(data: any) {
+  if (["string", "symbol"].includes(typeof data)) {
+    return `"${data}"`;
+  }
+  return data;
+}
+
+export function objectColorFunction(
+  obj: Record<string, any>,
+  prm: ColorFunction,
+  params: ParamColors,
+  colors: boolean,
+  indent = 0,
+): string {
+  const indentation = " ".repeat(indent);
+  const indentation2 = " ".repeat(indent + 2);
+  const keys = Object.keys(obj);
+  const formattedValues = keys.reduce(
+    (acc: Record<string, any>, key: string) => {
+      acc[key] = prm(valueHRF(obj[key])).split("\n").join("\n" + indentation2);
+      return acc;
+    },
+    {},
+  );
+  const formattedKeys = keys.map((key: string) => {
+    return `${colors ? params.objectKey(key) : key}: ${formattedValues[key]}`;
+  });
+
+  const longestValue = keys.reduce(
+    (acc: number, key: string) => {
+      return Math.max(acc, JSON.stringify(obj[key]).length);
+    },
+    0,
+  );
+  const maxSizeThreshold = 20;
+  return longestValue > maxSizeThreshold || keys.length > maxSizeThreshold
+    ? `${indentation}{\n${
+      indentation2 + formattedKeys.join(",\n" + indentation2)
+    }\n${indentation}}`
+    : `${indentation}{${formattedKeys.join(", ")}${indentation}}`;
+}
+
+export function arrayColorFunction(
+  arr: any[],
+  prm: ColorFunction,
+  params: ParamColors,
+  colors: boolean,
+  indent = 0,
+): string {
+  const indentation = " ".repeat(indent);
+  const indentation2 = " ".repeat(indent + 2);
+  const formattedValues = arr.map((v: any) =>
+    prm(valueHRF(v)).split("\n").join("\n" + indentation2)
+  );
+  const longestValue = arr.reduce((acc: number, v: any) => {
+    return Math.max(acc, JSON.stringify(v).length);
+  }, 0);
+  const maxSizeThreshold = 20;
+  return longestValue > maxSizeThreshold || arr.length > maxSizeThreshold
+    ? `${indentation}[\n${
+      indentation2 + formattedValues.join(",\n" + indentation2)
+    }\n${indentation}]`
+    : `${indentation}[${formattedValues.join(", ")}${indentation}]`;
+}
+
 export const defaultParamColorOptions: ParamColors = {
   string: cyan,
   number: magenta,
@@ -39,20 +104,15 @@ export const defaultParamColorOptions: ParamColors = {
   null: (s: any) => italic(gray(s)),
   function: blue,
   symbol: brightMagenta,
-  object: function (o: Record<string, any>) {
-    return `{${
-      Object.keys(o).map((k) => `${k}: ${(this as any)[typeof o[k]](o[k])}`)
-        .join(", ")
-    }}`;
-  },
-  array: function (a: any[]) {
-    return `[${a.map((v) => (this as any)[typeof v](v)).join(", ")}]`;
-  },
+  objectKey: gray,
+  object: objectColorFunction,
+  array: arrayColorFunction,
   date: blue,
   exception: red,
-}
+};
 
-export const defaultTimestampColorOption = (t: any) => rgb24(t, { r: 140, g: 140, b: 170 })
+export const defaultTimestampColorOption = (t: any) =>
+  rgb24(t, { r: 140, g: 140, b: 170 });
 
 /**
  * The current timestamp in the international ISO standard for specifying dates.
