@@ -1,4 +1,5 @@
-import { LoggingFormatter, LoggingLevel } from "../types.ts";
+import { LoggingLevel, MessageTemplateParams, TimestampProvider } from "../types.ts";
+import { Formatter } from "./Formatter.ts";
 
 /**
  * Sink is a class that can be attached to a `Logger` instance.
@@ -9,19 +10,22 @@ export abstract class Sink {
   /**
    * Format function to be used when logging messages.
    */
-  public formatter: LoggingFormatter;
+  public formatter: Formatter;
   /**
    * The specific logging levels to log to the sink.
    */
   public levels: LoggingLevel[];
 
+  public timestampProvider: TimestampProvider;
+
   /**
    * Construct a new sink.
    * @param levels The specific logging levels to log to the sink. Defaults to all levels.
    */
-  constructor(formatter: LoggingFormatter, levels: LoggingLevel[]) {
-    this.formatter = formatter;
+  constructor(levels: LoggingLevel[], formatter: Formatter, timestampProvider: TimestampProvider) {
     this.levels = levels;
+    this.formatter = formatter;
+	this.timestampProvider = timestampProvider;
     if (levels.length === 0) {
       this.fromRange(LoggingLevel.Log);
     }
@@ -53,6 +57,5 @@ export abstract class Sink {
    * Logs the given message to the sink.
    * @param message The message to log.
    */
-  // deno-lint-ignore no-explicit-any
-  public abstract log(data: any[], level: LoggingLevel): void;
+  public abstract log(level: LoggingLevel, template: string, params: MessageTemplateParams): void;
 }

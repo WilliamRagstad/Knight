@@ -1,43 +1,49 @@
 import { Sink } from "./Sink.ts";
-import { ColorOptions, LoggingFormatter, LoggingLevel } from "../types.ts";
 import {
-  defaultColorOptions,
-  defaultTimestamp,
-  textFormatter,
-} from "./defaults.ts";
+  LoggingLevel,
+  MessageTemplateParams,
+  TimestampProvider,
+} from "../types.ts";
+import { defaultTimestamp } from "./defaults.ts";
+import { TextFormatter } from "./TextFormatter.ts";
+import { Formatter } from "./Formatter.ts";
 
 /**
  * A console sink that writes to the terminal using a set of colors.
  * Formatting is fully configurable but defaults to human readable text.
  */
 export class ConsoleSink extends Sink {
-  private _enableColors: boolean;
-  private _colorOptions: ColorOptions;
   constructor(
-    formatter?: LoggingFormatter,
-    colorOpt?: Partial<ColorOptions>,
     levels?: LoggingLevel[],
+    formatter?: Formatter,
+    timestampProvider?: TimestampProvider,
   ) {
-    super(formatter ?? textFormatter, levels ?? []);
-    this._enableColors = true;
-    this._colorOptions = Object.assign(defaultColorOptions, colorOpt);
+    super(
+      levels ?? [],
+      formatter ?? new TextFormatter(),
+      timestampProvider ?? defaultTimestamp,
+    );
   }
 
   public noColors(): ConsoleSink {
-    this._enableColors = false;
+    if (this.formatter instanceof TextFormatter) {
+      this.formatter.noColors();
+    }
     return this;
   }
 
-  // deno-lint-ignore no-explicit-any
-  public log(data: any[], level: LoggingLevel): void {
+  public log(
+    level: LoggingLevel,
+    template: string,
+    params: MessageTemplateParams,
+  ): void {
     if (!this.levels.includes(level)) return;
-    const colorFunction = this._colorOptions[LoggingLevel[level].toLowerCase()];
-    const formatted = this.formatter({
-      data: data,
+
+    const formatted = this.formatter.format({
+      template: template,
+      params: params,
       level: level,
-      timestamp: defaultTimestamp(),
-      levelColorFunction: colorFunction,
-      colorsEnabled: this._enableColors,
+      timestamp: this.timestampProvider(),
     });
     switch (level) {
       case LoggingLevel.Log:

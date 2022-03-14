@@ -1,27 +1,44 @@
-import { LoggingFormatter, LoggingLevel } from "../types.ts";
-import { defaultTimestamp, textFormatter } from "./defaults.ts";
+import {
+  LoggingLevel,
+  MessageTemplateParams,
+  TimestampProvider,
+} from "../types.ts";
+import { defaultTimestamp } from "./defaults.ts";
 import { Sink } from "./Sink.ts";
 import { ensureFileSync } from "https://deno.land/std/fs/mod.ts";
+import { TextFormatter } from "./TextFormatter.ts";
+import { Formatter } from "./Formatter.ts";
 export class FileSink extends Sink {
   private _filepath: string;
   constructor(
     filepath: string,
-    formatter?: LoggingFormatter,
     levels?: LoggingLevel[],
+    formatter?: Formatter,
+    timestampProvider?: TimestampProvider,
   ) {
-    super(formatter ?? textFormatter, levels ?? []);
+    super(
+      levels ?? [],
+      formatter ?? new TextFormatter(),
+      timestampProvider ?? defaultTimestamp,
+    );
     this._filepath = filepath;
     ensureFileSync(filepath);
   }
 
-  // deno-lint-ignore no-explicit-any
-  public log(data: any[], level: LoggingLevel): void {
+  public log(
+    level: LoggingLevel,
+    template: string,
+    params: MessageTemplateParams,
+  ): void {
     if (!this.levels.includes(level)) return;
-    const formatted = this.formatter({
-      data: data,
-      level,
-      timestamp: defaultTimestamp(),
-      colorsEnabled: false,
+	if (this.formatter instanceof TextFormatter) {
+		this.formatter.noColors();
+	  }
+    const formatted = this.formatter.format({
+      template: template,
+      params: params,
+      level: level,
+      timestamp: this.timestampProvider(),
     });
     const encoder = new TextEncoder();
     Deno.writeFileSync(
