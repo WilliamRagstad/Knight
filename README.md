@@ -43,6 +43,27 @@ latest version of the `Knight` module. Now either let Knight create a new server
 instance, or use an existing Oak application. In the example below we will use
 the former.
 
+
+<br/>
+
+> ### Project Structure
+>
+> We suggest that the project structure is as follows:
+>
+> ```
+> /
+> ├── controller/
+> │   └── UserController.ts
+> ├── model/
+> │   └── User.ts
+> ├── service/
+> │   └── LoggingService.ts
+> ├── index.ts
+> ```
+>
+> All files named `*Controller.ts` are automatically found and used by the
+> framework.
+
 <br/>
 
 `/index.ts`
@@ -58,24 +79,6 @@ await app.listen({ port: 8000 });
 
 In this introduction, the `Knight.build()` function will find and use the
 `UserController` class from an example below.
-
-<br/>
-
-> ### Project Structure
->
-> We suggest that the project structure is as follows:
->
-> ```
-> /
-> ├── controller/
-> │   └── UserController.ts
-> ├── model/
-> │   └── User.ts
-> ├── index.ts
-> ```
->
-> All files named `*Controller.ts` are automatically found and used by the
-> framework.
 
 <br/>
 
