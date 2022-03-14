@@ -17,7 +17,7 @@ const identityColorFunction: ColorFunction = (s: any) => s;
 /**
  * Format a string using the standard library `std/fmt/colors.ts` or custom function.
  */
-type ColorFunction = (str: string) => string;
+export type ColorFunction = (str: any) => string;
 
 export type LevelColors = {
   log: ColorFunction;
@@ -43,8 +43,9 @@ export type ParamColors = {
   null: ColorFunction;
   function: ColorFunction;
   symbol: ColorFunction;
-  object: (o: Record<string, any>) => string;
-  array: (a: any[]) => string;
+  objectKey: ColorFunction;
+  object: (obj: Record<string, any>, prm: ColorFunction, params: ParamColors, colors: boolean) => string;
+  array: (arr: any[], prm: ColorFunction, params: ParamColors, colors: boolean) => string;
   date: ColorFunction;
   exception: ColorFunction;
 };
@@ -86,7 +87,7 @@ export class TextFormatter extends Formatter {
    * @param paramColors The color options for the parameter
    * @returns A function that will color and format a parameter
    */
-  private paramColorFormatter(paramColors: ParamColors): ColorFunction {
+  private paramColorFormatter(paramColors: ParamColors, colorsEnabled: boolean): ColorFunction {
     /**
      * Correctly color and format a log message parameter.
      * @param value The value to format
@@ -95,14 +96,14 @@ export class TextFormatter extends Formatter {
     return (value: any) => {
       if (typeof value === "object") {
         if (Array.isArray(value)) {
-          return paramColors.array(value);
+          return paramColors.array(value, this.paramColorFormatter(paramColors, colorsEnabled), paramColors, colorsEnabled);
         }
-        return paramColors.object(value);
+        return paramColors.object(value, this.paramColorFormatter(paramColors, colorsEnabled), paramColors, colorsEnabled);
       }
       if (typeof value === "function") {
-        return paramColors.function(value.name);
+        return colorsEnabled ? paramColors.function(value.name) : value.name;
       }
-      return paramColors[typeof value](value.toString());
+      return colorsEnabled ? paramColors[typeof value](value.toString(), this.paramColorFormatter(paramColors, colorsEnabled), paramColors, colorsEnabled) : value.toString();
     };
   }
 
@@ -124,7 +125,7 @@ export class TextFormatter extends Formatter {
       }
       const colorFunction = (this.options.levels as any)[levelName];
       return `${gray("[")}${this.options.timestamp(timestamp)} ${gray("|")} ${
-        bold((colorFunction ?? identityColorFunction)(LoggingLevel[level]))
+        bold(colorFunction(LoggingLevel[level]))
       }${
         this.options.align && spacingUntil(LoggingLevel[level].length, 8) ||
         ""
@@ -132,14 +133,14 @@ export class TextFormatter extends Formatter {
         compileMessage(
           template,
           params,
-          this.paramColorFormatter(this.options.params),
+          this.paramColorFormatter(this.options.params, true),
         )
       }`;
     } else {
       return `[${timestamp} | ${LoggingLevel[level]}${
         this.options.align &&
           spacingUntil(LoggingLevel[level].length, 8) || ""
-      }]: ${compileMessage(template, params, identityColorFunction)}`;
+      }]: ${compileMessage(template, params, this.paramColorFormatter(this.options.params, false))}`;
     }
   }
 }
