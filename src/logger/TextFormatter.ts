@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { bold, gray } from "https://deno.land/std@0.128.0/fmt/colors.ts";
 import { LoggingLevel } from "../types.ts";
 import {
@@ -11,8 +12,6 @@ import { compileMessage } from "./parser.ts";
 function spacingUntil(current: number, length: number): string {
   return " ".repeat(length - current);
 }
-
-const identityColorFunction: ColorFunction = (s: any) => s;
 
 /**
  * Format a string using the standard library `std/fmt/colors.ts` or custom function.

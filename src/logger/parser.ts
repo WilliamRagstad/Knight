@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { MessageTemplateParams } from "../types.ts";
 
 /**
@@ -28,7 +29,7 @@ export function templateMessageParser(
 }
 
 /**
- * 
+ *
  * @param template The template message string
  * @param params The values to replace in the template
  * @param paramFormatter A function to format the params before they are used in the template

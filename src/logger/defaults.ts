@@ -74,8 +74,8 @@ export function objectColorFunction(
 export function arrayColorFunction(
   arr: any[],
   prm: ColorFunction,
-  params: ParamColors,
-  colors: boolean,
+  _params: ParamColors,
+  _colors: boolean,
   indent = 0,
 ): string {
   const indentation = " ".repeat(indent);
