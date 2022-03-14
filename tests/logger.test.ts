@@ -4,12 +4,13 @@ import {
   defaultTimestamp,
   FileSink,
   Logger,
+  LoggingLevel,
   timeTimestamp,
 } from "../mod.ts";
 import { TextFormatter } from "../mod.ts";
 
 /** ========================================================================
- *                        Logging tests for Knight
+ *                        Helper functions and globals
  * ========================================================================* */
 
 const tmpLogFile = "./test.log";
@@ -23,13 +24,19 @@ function getLogs() {
   return content;
 }
 
+/** ========================================================================
+ *                        Logging tests for Knight
+ * ========================================================================* */
+
 Deno.test("Info hello world", () => {
+  console.log();
   const timestamp = defaultTimestamp();
   logger.info("Hello World");
   assertEquals(getLogs(), `[${timestamp} | Info    ]: Hello World\n`);
 });
 
 Deno.test("logging alignment and template string parameters", () => {
+  console.log();
   const timestamp1 = defaultTimestamp();
   logger.info("First line");
   const timestamp2 = defaultTimestamp();
@@ -61,6 +68,7 @@ Deno.test("logging alignment and template string parameters", () => {
 });
 
 Deno.test("Custom timestamp provider", () => {
+  console.log();
   const logger = new Logger()
     .attach(new ConsoleSink(undefined, undefined, timeTimestamp))
     .attach(new FileSink(tmpLogFile, undefined, undefined, timeTimestamp));
@@ -70,6 +78,7 @@ Deno.test("Custom timestamp provider", () => {
 });
 
 Deno.test("Non aligned logs", () => {
+  console.log();
   const formatter = new TextFormatter({
     align: false,
   });
@@ -79,4 +88,16 @@ Deno.test("Non aligned logs", () => {
   const timestamp = defaultTimestamp();
   logger.info("Example message");
   assertEquals(getLogs(), `[${timestamp} | Info]: Example message\n`);
+});
+
+Deno.test("Logging under level", () => {
+  console.log();
+  const logger = new Logger()
+    .attach(new ConsoleSink().fromRange(LoggingLevel.Warning))
+    .attach(new FileSink(tmpLogFile).fromRange(LoggingLevel.Warning));
+  logger.info("This should not be logged");
+  logger.debug("This should not be logged");
+  logger.warning("This should be logged");
+  const timestamp = defaultTimestamp();
+  assertEquals(getLogs(), `[${timestamp} | Warning ]: This should be logged\n`);
 });
