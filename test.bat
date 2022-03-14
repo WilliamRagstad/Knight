@@ -1,0 +1,1 @@
+deno test --unstable -A tests
