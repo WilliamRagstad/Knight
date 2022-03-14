@@ -1,4 +1,8 @@
-import { LoggingLevel, MessageTemplateParams, TimestampProvider } from "../types.ts";
+import {
+  LoggingLevel,
+  MessageTemplateParams,
+  TimestampProvider,
+} from "../types.ts";
 import { Formatter } from "./Formatter.ts";
 
 /**
@@ -22,10 +26,14 @@ export abstract class Sink {
    * Construct a new sink.
    * @param levels The specific logging levels to log to the sink. Defaults to all levels.
    */
-  constructor(levels: LoggingLevel[], formatter: Formatter, timestampProvider: TimestampProvider) {
+  constructor(
+    levels: LoggingLevel[],
+    formatter: Formatter,
+    timestampProvider: TimestampProvider,
+  ) {
     this.levels = levels;
     this.formatter = formatter;
-	this.timestampProvider = timestampProvider;
+    this.timestampProvider = timestampProvider;
     if (levels.length === 0) {
       this.fromRange(LoggingLevel.Log);
     }
@@ -57,5 +65,9 @@ export abstract class Sink {
    * Logs the given message to the sink.
    * @param message The message to log.
    */
-  public abstract log(level: LoggingLevel, template: string, params: MessageTemplateParams): void;
+  public abstract log(
+    level: LoggingLevel,
+    template: string,
+    params: MessageTemplateParams,
+  ): void;
 }

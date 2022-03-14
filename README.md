@@ -43,7 +43,6 @@ latest version of the `Knight` module. Now either let Knight create a new server
 instance, or use an existing Oak application. In the example below we will use
 the former.
 
-
 <br/>
 
 > ### Project Structure

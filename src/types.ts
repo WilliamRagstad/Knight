@@ -58,11 +58,9 @@ enum LoggingLevel {
   Fatal,
 }
 
-
 type MessageTemplateParams = { [key: string]: string };
 
 type TimestampProvider = () => string;
-
 
 export { AppMode, IController, LoggingLevel, Request, Response };
 

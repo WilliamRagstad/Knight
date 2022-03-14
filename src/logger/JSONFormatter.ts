@@ -2,7 +2,6 @@ import { Formatter, LoggingFormatterData } from "./Formatter.ts";
 import { compileMessage } from "./parser.ts";
 
 export class JSONFormatter extends Formatter {
-
   /**
    * Format a message as JSON of the form `{"message": MESSAGE, "template": TEMPLATE_STRING, "params", PARAMS, "level": LEVEL, "timestamp": TIME}`.
    * Colors are not supported.

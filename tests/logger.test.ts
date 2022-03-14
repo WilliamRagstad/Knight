@@ -122,19 +122,44 @@ Deno.test("Message template strings with different parameter types", () => {
         },
       },
       array: [
-        1, 2, 3, "this was the last one",
-      ]
+        1,
+        2,
+        3,
+        "this was the last one",
+      ],
     },
     short: {
       array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     },
     long: {
-      array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+      array: [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+      ],
     },
   });
   assertEquals(
     getLogs(),
-`[${timestamp} | Info    ]: Example message with My message and 1337
+    `[${timestamp} | Info    ]: Example message with My message and 1337
 [${timestamp} | Debug   ]: My object: {foo: "bar", baz: "qux"}
 [${timestamp} | Info    ]: My array: ["foo", "bar", "baz"]
 [${timestamp} | Critical]: My nums: [1, 2, 3]
@@ -186,4 +211,4 @@ Deno.test("Message template strings with different parameter types", () => {
 }
 `,
   );
-})
+});

@@ -66,24 +66,34 @@ export class Knight {
       controller.getById &&
         router.get(
           `${basePath}/:id`,
-          this.endpointHandler(controller, (ctx) =>
-            controller.getById && controller.getById(ctx.params.id, ctx as any)
+          this.endpointHandler(
+            controller,
+            (ctx) =>
+              controller.getById &&
+              controller.getById(ctx.params.id, ctx as any),
           ),
         );
       controller.post &&
-        router.post(basePath, this.endpointHandler(controller, controller.post));
+        router.post(
+          basePath,
+          this.endpointHandler(controller, controller.post),
+        );
       controller.delete &&
         router.delete(
           `${basePath}/:id`,
-          this.endpointHandler(controller, (ctx) =>
-            controller.delete && controller.delete(ctx.params.id, ctx as any)
+          this.endpointHandler(
+            controller,
+            (ctx) =>
+              controller.delete && controller.delete(ctx.params.id, ctx as any),
           ),
         );
       controller.put &&
         router.put(
           `${basePath}/:id`,
-          this.endpointHandler(controller, (ctx) =>
-            controller.put && controller.put(ctx.params.id, ctx as any)
+          this.endpointHandler(
+            controller,
+            (ctx) =>
+              controller.put && controller.put(ctx.params.id, ctx as any),
           ),
         );
 
@@ -96,8 +106,9 @@ export class Knight {
           const method: HTTPMethods = endpoint.method.toUpperCase();
           const handler = endpoint
             .handler as ((params: Params, ctx: Context) => Void);
-          const wrapper = this.endpointHandler(controller, (ctx) =>
-            handler.call(controller, ctx.params, ctx)
+          const wrapper = this.endpointHandler(
+            controller,
+            (ctx) => handler.call(controller, ctx.params, ctx),
           );
           switch (method) {
             case "GET":

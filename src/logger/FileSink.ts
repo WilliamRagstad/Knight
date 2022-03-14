@@ -31,9 +31,9 @@ export class FileSink extends Sink {
     params: MessageTemplateParams,
   ): void {
     if (!this.levels.includes(level)) return;
-	if (this.formatter instanceof TextFormatter) {
-		this.formatter.noColors();
-	  }
+    if (this.formatter instanceof TextFormatter) {
+      this.formatter.noColors();
+    }
     const formatted = this.formatter.format({
       template: template,
       params: params,

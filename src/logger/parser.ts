@@ -29,12 +29,18 @@ export function templateMessageParser(
 }
 
 /**
- *
  * @param template The template message string
  * @param params The values to replace in the template
  * @param paramFormatter A function to format the params before they are used in the template
  * @returns The formatted message
  */
-export function compileMessage(template: string, params: MessageTemplateParams, paramFormatter: (d: any) => string): string {
-  return template.replace(/\{([^}]+)\}/g, (_, key) => paramFormatter(params[key]));
+export function compileMessage(
+  template: string,
+  params: MessageTemplateParams,
+  paramFormatter: (d: any) => string,
+): string {
+  return template.replace(
+    /\{([^}]+)\}/g,
+    (_, key) => paramFormatter(params[key]),
+  );
 }

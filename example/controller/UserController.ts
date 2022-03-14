@@ -1,4 +1,5 @@
 import {
+  badRequest,
   bodyMappingJSON,
   Context,
   Controller,
@@ -6,7 +7,6 @@ import {
   Endpoint,
   IController,
   internalServerError,
-  badRequest,
   Logger,
   ok,
   Params,
@@ -25,10 +25,10 @@ export default class UserController extends IController {
   }
 
   get({ response }: Context): void {
-	this.log.info("Request to: GET /user");
-	const msg = "Cannot get all users";
-	badRequest(response, msg);
-	this.log.error(msg);
+    this.log.info("Request to: GET /user");
+    const msg = "Cannot get all users";
+    badRequest(response, msg);
+    this.log.error(msg);
   }
 
   async post({ request, response }: Context): Promise<void> {

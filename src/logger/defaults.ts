@@ -104,7 +104,7 @@ export const defaultParamColorOptions: ParamColors = {
   null: (s: any) => italic(gray(s)),
   function: blue,
   symbol: brightMagenta,
-  objectKey: s => rgb24(s, { r: 160, g: 180, b: 230 }),
+  objectKey: (s) => rgb24(s, { r: 160, g: 180, b: 230 }),
   object: objectColorFunction,
   array: arrayColorFunction,
   date: blue,
