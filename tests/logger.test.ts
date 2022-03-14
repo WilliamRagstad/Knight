@@ -46,11 +46,7 @@ Deno.test("logging alignment and template string parameters", () => {
   const timestamp4 = defaultTimestamp();
   logger.warning("Fourth line");
   const timestamp5 = defaultTimestamp();
-  logger.success(
-    "Fifth line, {msg} and {favNum} are the best!",
-    "My message",
-    1337,
-  );
+  logger.success("Fifth line");
   const timestamp6 = defaultTimestamp();
   logger.fatal("Sixth line");
   const timestamp7 = defaultTimestamp();
@@ -61,7 +57,7 @@ Deno.test("logging alignment and template string parameters", () => {
 [${timestamp2} | Critical]: Second line
 [${timestamp3} | Error   ]: Third line
 [${timestamp4} | Warning ]: Fourth line
-[${timestamp5} | Success ]: Fifth line, My message and 1337 are the best!
+[${timestamp5} | Success ]: Fifth line
 [${timestamp6} | Fatal   ]: Sixth line
 [${timestamp7} | Debug   ]: Seventh line\n`,
   );
@@ -101,3 +97,93 @@ Deno.test("Logging under level", () => {
   const timestamp = defaultTimestamp();
   assertEquals(getLogs(), `[${timestamp} | Warning ]: This should be logged\n`);
 });
+
+Deno.test("Message template strings with different parameter types", () => {
+  console.log();
+  const timestamp = defaultTimestamp();
+  logger.info("Example message with {msg} and {favNum}", "My message", 1337);
+  logger.debug("My object: {obj}", {
+    foo: "bar",
+    baz: "qux",
+  });
+  logger.info("My array: {arr}", ["foo", "bar", "baz"]);
+  logger.critical("My nums: {arr}", [1, 2, 3]);
+  logger.success("My bools: {arr}", [true, false, true]);
+  logger.debug("{data}", ["string", 1337, { foo: "bar" }]);
+  logger.warning("Lots of data:\n{data}", {
+    deep: {
+      object: {
+        with: {
+          lots: {
+            of: {
+              data: "here",
+            },
+          },
+        },
+      },
+      array: [
+        1, 2, 3, "this was the last one",
+      ]
+    },
+    short: {
+      array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    },
+    long: {
+      array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+    },
+  });
+  assertEquals(
+    getLogs(),
+`[${timestamp} | Info    ]: Example message with My message and 1337
+[${timestamp} | Debug   ]: My object: {foo: "bar", baz: "qux"}
+[${timestamp} | Info    ]: My array: ["foo", "bar", "baz"]
+[${timestamp} | Critical]: My nums: [1, 2, 3]
+[${timestamp} | Success ]: My bools: [true, false, true]
+[${timestamp} | Debug   ]: ["string", 1337, {foo: "bar"}]
+[${timestamp} | Warning ]: Lots of data:
+{
+  deep: {
+    object: {
+      with: {
+        lots: {of: {data: "here"}}
+      }
+    },
+    array: [
+      1,
+      2,
+      3,
+      "this was the last one"
+    ]
+  },
+  short: {
+    array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  },
+  long: {
+    array: [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21
+    ]
+  }
+}
+`,
+  );
+})
