@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { Sink } from "./Sink.ts";
 import { LoggingLevel } from "../types.ts";
+import { templateMessageParser } from "./parser.ts";
 
 export class Logger {
   private _sinks: Sink[];
@@ -14,71 +15,73 @@ export class Logger {
     return this;
   }
 
-  private _log(data: any[], level: LoggingLevel): void {
-    this._sinks.forEach((sink) => sink.log(data, level));
+  private _log(level: LoggingLevel, template: string, params: any[]): void {
+    this._sinks.forEach((sink) =>
+      sink.log(level, template, templateMessageParser(template, params))
+    );
   }
 
   /**
    * Logs a message at the lowest `Log` level.
    * @param data Values to log.
    */
-  public log(...data: any[]): void {
-    this._log(data, LoggingLevel.Log);
+  public log(message: string, ...params: any[]): void {
+    this._log(LoggingLevel.Log, message, params);
   }
 
   /**
    * Logs a message at the `Debug` level.
    * @param data Values to log.
    */
-  public debug(...data: any[]): void {
-    this._log(data, LoggingLevel.Debug);
+  public debug(message: string, ...params: any[]): void {
+    this._log(LoggingLevel.Debug, message, params);
   }
 
   /**
    * Logs a message at the `Info` level.
    * @param data Values to log.
    */
-  public info(...data: any[]): void {
-    this._log(data, LoggingLevel.Info);
+  public info(message: string, ...params: any[]): void {
+    this._log(LoggingLevel.Info, message, params);
   }
 
   /**
    * Logs a message at the `Debug` level.
    * @param data Values to log.
    */
-  public success(...data: any[]): void {
-    this._log(data, LoggingLevel.Success);
+  public success(message: string, ...params: any[]): void {
+    this._log(LoggingLevel.Success, message, params);
   }
 
   /**
    * Logs a message at the `Warning` level.
    * @param data Values to log.
    */
-  public warn(...data: any[]): void {
-    this._log(data, LoggingLevel.Warning);
+  public warning(message: string, ...params: any[]): void {
+    this._log(LoggingLevel.Warning, message, params);
   }
 
   /**
    * Logs a message at the `Error` level.
    * @param data Values to log.
    */
-  public error(...data: any[]): void {
-    this._log(data, LoggingLevel.Error);
+  public error(message: string, ...params: any[]): void {
+    this._log(LoggingLevel.Error, message, params);
   }
 
   /**
    * Logs a message at the `Critical` level.
    * @param data Values to log.
    */
-  public critical(...data: any[]): void {
-    this._log(data, LoggingLevel.Critical);
+  public critical(message: string, ...params: any[]): void {
+    this._log(LoggingLevel.Critical, message, params);
   }
 
   /**
    * Logs a message at the `Fatal` level.
    * @param data Values to log.
    */
-  public fatal(...data: any[]): void {
-    this._log(data, LoggingLevel.Fatal);
+  public fatal(message: string, ...params: any[]): void {
+    this._log(LoggingLevel.Fatal, message, params);
   }
 }
