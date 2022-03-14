@@ -112,7 +112,7 @@ export const defaultParamColorOptions: ParamColors = {
 };
 
 export const defaultTimestampColorOption = (t: any) =>
-  rgb24(t, { r: 140, g: 140, b: 170 });
+  rgb24(t, { r: 140, g: 150, b: 170 });
 
 /**
  * The current timestamp in the international ISO standard for specifying dates.
