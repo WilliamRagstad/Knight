@@ -12,11 +12,14 @@ export { Logger } from "./src/logger/Logger.ts";
 export { Sink } from "./src/logger/Sink.ts";
 export { ConsoleSink } from "./src/logger/ConsoleSink.ts";
 export { FileSink } from "./src/logger/FileSink.ts";
+export { Formatter } from "./src/logger/Formatter.ts";
+export { TextFormatter } from "./src/logger/TextFormatter.ts";
+export { JSONFormatter } from "./src/logger/JSONFormatter.ts";
 export {
+  dateTimestamp,
   defaultTimestamp,
   isoTimestamp,
-  jsonFormatter,
-  textFormatter,
+  timeTimestamp,
 } from "./src/logger/defaults.ts";
 
 export {
