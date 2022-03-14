@@ -1,24 +1,44 @@
 // deno-lint-ignore-file no-explicit-any
 import { Constructor, Request, Response } from "./types.ts";
 
-/** ========================================================================
+/**========================================================================
  *                           Request helpers
- * ========================================================================* */
+ * ========================================================================**/
 
+/**
+ * Get the request body as a string.
+ * @param request The request object
+ * @returns The request body as a string
+ */
 export async function bodyText(request: Request): Promise<string> {
   return await request.body({ type: "text" }).value;
 }
 
+/**
+ * Get the request body as a byte array.
+ * @param request The request object
+ * @returns The request body as a byte array
+ */
 export async function bodyBytes(request: Request): Promise<Uint8Array> {
   return await request.body({ type: "bytes" }).value;
 }
 
+/**
+ * Get the request body as a byte stream.
+ * @param request The request object
+ * @returns The request body as a byte stream
+ */
 export async function bodyStream(
   request: Request,
 ): Promise<ReadableStream<Uint8Array>> {
   return await request.body({ type: "stream" }).value;
 }
 
+/**
+ * Get the request body as a any object.
+ * @param request The request object
+ * @returns The request body as any object
+ */
 export async function bodyAny(request: Request): Promise<any> {
   return await request.body({ type: "undefined" }).value;
 }
