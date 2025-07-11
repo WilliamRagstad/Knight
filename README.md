@@ -34,7 +34,7 @@ Focus on what you want to do, and the framework will take care of the rest.
 
 ## Documentation
 
-> ### View the full [technical documentation](https://doc.deno.land/https://deno.land/x/knight/mod.ts).
+> ### View the full [technical documentation](https://jsr.io/@knight/knight@3.0.0).
 
 ## Getting Started
 
@@ -49,7 +49,7 @@ the former.
 >
 > We suggest that the project structure is as follows:
 >
-> ```
+> ```plaintext
 > /
 > ├── controller/
 > │   └── UserController.ts
@@ -65,10 +65,14 @@ the former.
 
 <br/>
 
+```bash
+deno add jsr:@knight/knight
+```
+
 `/index.ts`
 
 ```ts
-import { Knight } from "https://deno.land/x/knight/mod.ts";
+import { Knight } from "@knight/knight";
 
 const app = await Knight.build();
 
@@ -101,7 +105,7 @@ import {
   IController,
   ok,
   Params,
-} from "https://deno.land/x/knight/mod.ts";
+} from "@knight/knight";
 
 import User from "../model/User.ts";
 
@@ -138,7 +142,7 @@ that the property is optional to body mapping functions.
 `/model/User.ts`
 
 ```ts
-import { Optional } from "https://deno.land/x/knight/mod.ts";
+import { Optional } from "@knight/knight";
 
 export default class User {
   firstName: string;
@@ -219,7 +223,7 @@ import {
   Logger,
   LoggingLevel,
   Service,
-} from "https://deno.land/x/knight/mod.ts";
+} from "@knight/knight";
 
 export default Service(
   class LoggingService {

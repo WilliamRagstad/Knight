@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { bold, gray } from "https://deno.land/std@0.128.0/fmt/colors.ts";
+import { bold, gray } from "@std/fmt/colors";
 import { LoggingLevel } from "../types.ts";
 import {
   defaultLevelColorOptions,

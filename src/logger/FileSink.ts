@@ -5,7 +5,7 @@ import {
 } from "../types.ts";
 import { defaultTimestamp } from "./defaults.ts";
 import { Sink } from "./Sink.ts";
-import { ensureFileSync } from "https://deno.land/std/fs/mod.ts";
+import { ensureFileSync } from "@std/fs";
 import { TextFormatter } from "./TextFormatter.ts";
 import { Formatter } from "./Formatter.ts";
 export class FileSink extends Sink {

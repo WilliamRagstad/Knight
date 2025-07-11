@@ -12,7 +12,7 @@ import {
   rgb24,
   white,
   yellow,
-} from "https://deno.land/std@0.128.0/fmt/colors.ts";
+} from "@std/fmt/colors";
 import { ColorFunction, LevelColors, ParamColors } from "./TextFormatter.ts";
 
 /**
