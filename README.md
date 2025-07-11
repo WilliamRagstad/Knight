@@ -7,7 +7,7 @@
 	<td>
 	<h1>Knight</h1>
 	<p>
-		A MVC REST framework for Deno 🦕 built on <a href="https://deno.land/x/oak@v10.2.0">Oak</a> and inspired by Spring.<br/>
+		A MVC REST framework for Deno 🦕 built on <a href="https://jsr.io/@oak/oak@17.1.5">Oak</a> and inspired by Spring.<br/>
 		Build scalable controller-based CRUD APIs with ease.
 	</p>
 	</td>
