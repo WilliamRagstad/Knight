@@ -6,7 +6,8 @@ import {
   RouteParams,
   RouterContext,
   RouterMiddleware,
-} from "https://deno.land/x/oak/mod.ts";
+} from "@oak/oak";
+
 
 import { IController } from "./IController.ts";
 

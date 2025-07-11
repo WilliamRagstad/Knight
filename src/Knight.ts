@@ -7,7 +7,7 @@ import {
   RouterContext,
   RouterMiddleware,
   State,
-} from "https://deno.land/x/oak/mod.ts";
+} from "@oak/oak";
 
 import { AppMode, Context, IController, Params, Void } from "./types.ts";
 
