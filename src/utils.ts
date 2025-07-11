@@ -11,7 +11,7 @@ import { Constructor, Request, Response } from "./types.ts";
  * @returns The request body as a string
  */
 export async function bodyText(request: Request): Promise<string> {
-  return await request.body({ type: "text" }).value;
+  return await request.body.text();
 }
 
 /**
@@ -19,8 +19,8 @@ export async function bodyText(request: Request): Promise<string> {
  * @param request The request object
  * @returns The request body as a byte array
  */
-export async function bodyBytes(request: Request): Promise<Uint8Array> {
-  return await request.body({ type: "bytes" }).value;
+export async function bodyBytes(request: Request): Promise<Uint8Array>  {
+  return (await request.body.blob()).bytes();
 }
 
 /**
@@ -30,8 +30,8 @@ export async function bodyBytes(request: Request): Promise<Uint8Array> {
  */
 export async function bodyStream(
   request: Request,
-): Promise<ReadableStream<Uint8Array>> {
-  return await request.body({ type: "stream" }).value;
+): Promise<AsyncIterableIterator<Uint8Array<ArrayBufferLike>> | undefined> {
+  return await request.body.stream?.values();
 }
 
 /**
@@ -40,7 +40,7 @@ export async function bodyStream(
  * @returns The request body as any object
  */
 export async function bodyAny(request: Request): Promise<any> {
-  return await request.body({ type: "undefined" }).value;
+  return await request.body.json();
 }
 
 /**
@@ -54,22 +54,22 @@ export async function bodyMappingJSON<TModel>(
   request: Request,
   dtoType: Constructor<TModel>,
 ): Promise<TModel> {
-  const parsed = await request.body({ type: "json" }).value;
+  const parsed = await bodyAny(request);
   return mapping(parsed, dtoType);
 }
 export async function bodyMappingForm<TModel>(
   request: Request,
   dtoType: Constructor<TModel>,
 ): Promise<TModel> {
-  const parsed = await request.body({ type: "form" }).value;
+  const parsed = await request.body.form();
   return mapping(paramsToObject(parsed), dtoType);
 }
 export async function bodyMappingFormData<TModel>(
   request: Request,
   dtoType: Constructor<TModel>,
 ): Promise<TModel> {
-  const parsed = await request.body({ type: "form-data" }).value.read();
-  return mapping(parsed.fields, dtoType);
+  const parsed = (await request.body.formData());
+  return mapping(parsed, dtoType);
 }
 function paramsToObject(entries: URLSearchParams) {
   const result: Record<string, any> = {};

@@ -1,15 +1,15 @@
 // deno-lint-ignore-file no-explicit-any
 import {
   Application,
-  HTTPMethods,
-  RouteParams,
+  type HTTPMethods,
+  type RouteParams,
   Router,
-  RouterContext,
-  RouterMiddleware,
-  State,
+  type RouterContext,
+  type RouterMiddleware,
+  type State,
 } from "@oak/oak";
 
-import { AppMode, Context, IController, Params, Void } from "./types.ts";
+import { AppMode, type Context, IController, type Params, type Void } from "./types.ts";
 
 export class Knight {
   private static _mode = AppMode.DEV;
@@ -38,7 +38,7 @@ export class Knight {
           ctx.response.status = 500;
           ctx.response.body = {
             status: 500,
-            message: error.message,
+            message: error instanceof Error ? error.message : String(error),
           };
         }
       };
