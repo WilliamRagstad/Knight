@@ -6,7 +6,7 @@ import {
   defaultParamColorOptions,
   defaultTimestampColorOption,
 } from "./defaults.ts";
-import { Formatter, LoggingFormatterData } from "./Formatter.ts";
+import { Formatter, type LoggingFormatterData } from "./Formatter.ts";
 import { compileMessage } from "./parser.ts";
 
 function spacingUntil(current: number, length: number): string {

@@ -1,4 +1,4 @@
-import {
+import type {
   LoggingLevel,
   MessageTemplateParams,
   TimestampProvider,
@@ -7,7 +7,7 @@ import { defaultTimestamp } from "./defaults.ts";
 import { Sink } from "./Sink.ts";
 import { ensureFileSync } from "@std/fs";
 import { TextFormatter } from "./TextFormatter.ts";
-import { Formatter } from "./Formatter.ts";
+import type { Formatter } from "./Formatter.ts";
 export class FileSink extends Sink {
   private _filepath: string;
   constructor(

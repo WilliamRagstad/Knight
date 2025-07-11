@@ -13,7 +13,7 @@ import {
   white,
   yellow,
 } from "@std/fmt/colors";
-import { ColorFunction, LevelColors, ParamColors } from "./TextFormatter.ts";
+import type { ColorFunction, LevelColors, ParamColors } from "./TextFormatter.ts";
 
 /**
  * Default color options for the `ConsoleSink` class.
