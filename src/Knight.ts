@@ -17,7 +17,7 @@ export class Knight {
   public static setMode(mode: AppMode) {
     this._mode = mode;
   }
-  public static getMode() {
+  public static getMode(): AppMode {
     return this._mode;
   }
 
@@ -162,7 +162,7 @@ export class Knight {
    * @param controllers List of controllers to register
    * @returns A web server that can be started
    */
-  public static createApi(controllers: IController[]) {
+  public static createApi(controllers: IController[]): Application {
     const app = new Application();
     this.registerApp(app, controllers);
     return app;
@@ -172,7 +172,7 @@ export class Knight {
    * create a new web server and connect controllers in the local project.
    * @returns A web server that can be started
    */
-  public static async build() {
+  public static async build(): Promise<Application> {
     const app = new Application();
     const router = new Router();
 
@@ -192,7 +192,7 @@ export class Knight {
   /**
    * Find all controllers in the local project
    */
-  private static async findLocalControllersIn(directory: string) {
+  private static async findLocalControllersIn(directory: string): Promise<IController[]> {
     const controllers: IController[] = [];
     for await (const file of Deno.readDir(directory)) {
       const path = `${directory}/${file.name}`;

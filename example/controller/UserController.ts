@@ -1,15 +1,15 @@
 import {
   badRequest,
   bodyMappingJSON,
-  Context,
+  type Context,
   Controller,
   created,
   Endpoint,
   IController,
   internalServerError,
-  Logger,
+  type Logger,
   ok,
-  Params,
+  type Params,
 } from "../../mod.ts";
 
 import User from "../model/User.ts";
@@ -24,14 +24,14 @@ export default class UserController extends IController {
     this.log.info("UserController was created");
   }
 
-  get({ response }: Context): void {
+  override get({ response }: Context): void {
     this.log.info("Request to: GET /user");
     const msg = "Cannot get all users";
     badRequest(response, msg);
     this.log.error(msg);
   }
 
-  async post({ request, response }: Context): Promise<void> {
+  override async post({ request, response }: Context): Promise<void> {
     this.log.info("Request to: POST /user");
     const user = await bodyMappingJSON(request, User);
     this.log.debug(`User: ${user.toString()}`);
@@ -57,10 +57,11 @@ export default class UserController extends IController {
     try {
       throw new Error("This is a crash!");
     } catch (error) {
-      this.log.warn(error);
-      this.log.error(error);
-      this.log.critical(error);
-      this.log.fatal(error);
+      let err = error instanceof Error ? error.message : String(error);
+      this.log.warning(err);
+      this.log.error(err);
+      this.log.critical(err);
+      this.log.fatal(err);
       internalServerError(response);
     }
   }

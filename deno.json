@@ -8,5 +8,10 @@
     "@std/assert": "jsr:@std/assert@^1.0.13",
     "@std/fmt": "jsr:@std/fmt@^1.0.8",
     "@std/fs": "jsr:@std/fs@^1.0.19"
+  },
+  "compilerOptions": {
+    "target": "ES5",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }
