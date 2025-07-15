@@ -1,9 +1,9 @@
 import {
   LoggingLevel,
-  MessageTemplateParams,
-  TimestampProvider,
+  type MessageTemplateParams,
+  type TimestampProvider,
 } from "../types.ts";
-import { Formatter } from "./Formatter.ts";
+import type { Formatter } from "./Formatter.ts";
 
 /**
  * Sink is a class that can be attached to a `Logger` instance.
@@ -47,7 +47,7 @@ export abstract class Sink {
   public fromRange(
     minLevel: LoggingLevel,
     maxLevel?: LoggingLevel,
-  ) {
+  ) : Sink {
     // If no max level is specified, default to the max level.
     if (!maxLevel) {
       maxLevel = LoggingLevel.Fatal;

@@ -7,15 +7,15 @@ import type { Constructor, HTTPMethods, IController } from "./types.ts";
 	YboodP  YbodP  88  Y8   88   88  Yb  YbodP  88ood8 88ood8 888888 88  Yb     8888Y"  888888  YboodP  YbodP  88  Yb dP""""Yb   88    YbodP  88  Yb 8bodP'
 */
 
-export function Controller(path: string) {
+export function Controller(path: string) : ((target: Constructor<IController>) => void) {
   return function (target: Constructor<IController>) {
     target.prototype.path = path;
   };
 }
 
-export function Endpoint(method: HTTPMethods, path: string) {
+export function Endpoint(method: HTTPMethods, path: string) : MethodDecorator {
   // deno-lint-ignore no-explicit-any
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
     console.log(target);
     console.log(descriptor);
     if (!target.constructor.prototype.endpoints) {
@@ -37,9 +37,8 @@ export function Endpoint(method: HTTPMethods, path: string) {
 	88 YY 88  YbodP  8888Y"  888888 88ood8     8888Y"  888888  YboodP  YbodP  88  Yb dP""""Yb   88    YbodP  88  Yb 8bodP'
 */
 
-export function Optional() {
-  // deno-lint-ignore no-explicit-any
-  return function (target: Record<string, any>, propertyKey: string) {
+export function Optional() : PropertyDecorator {
+  return function (target: object, propertyKey: string | symbol) {
     target.constructor.prototype.optionals =
       target.constructor.prototype.optionals || [];
     target.constructor.prototype.optionals.push(propertyKey);
@@ -53,7 +52,10 @@ export function Optional() {
 	8bodP' 888888 88  Yb    YP    88  YboodP 888888     8888Y"  888888  YboodP  YbodP  88  Yb dP""""Yb   88    YbodP  88  Yb 8bodP'
 */
 
-export function Service<T>(target: Constructor<T>) {
+export function Service<T>(target: Constructor<T>) : Constructor<T> & {
+  instance: () => T;
+  _instance: T;
+  } {
   const singletonTarget = target as unknown as Constructor<T> & {
     instance: () => T;
     _instance: T;
