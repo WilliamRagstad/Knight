@@ -1,11 +1,11 @@
 // deno-lint-ignore-file no-explicit-any
 import {
-  HTTPMethods,
   Request,
   Response,
-  RouteParams,
-  RouterContext,
-  RouterMiddleware,
+  type HTTPMethods,
+  type RouteParams,
+  type RouterContext,
+  type RouterMiddleware,
 } from "@oak/oak";
 
 
