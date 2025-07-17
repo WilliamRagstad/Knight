@@ -16,8 +16,6 @@ export function Controller(path: string) : ((target: Constructor<IController>) =
 export function Endpoint(method: HTTPMethods, path: string) : MethodDecorator {
   // deno-lint-ignore no-explicit-any
   return function (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) {
-    console.log(target);
-    console.log(descriptor);
     if (!target.constructor.prototype.endpoints) {
       target.constructor.prototype.endpoints = [];
     }
