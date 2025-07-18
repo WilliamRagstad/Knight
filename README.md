@@ -14,7 +14,7 @@
 	</tbody>
 	</table>
 	<p>
-		<!-- <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/WilliamRagstad/Knight/Deno?style=flat-square"> -->
+		<a href="https://github.com/WilliamRagstad/Knight/actions/workflows/deno.yml"><img src="https://github.com/WilliamRagstad/Knight/actions/workflows/deno.yml/badge.svg"/></a>  
 		<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 		<img alt="All Contributors" src="https://img.shields.io/badge/all_contributors-1-g.svg?style=flat-square"/>
 		<!-- ALL-CONTRIBUTORS-BADGE:END -->
