@@ -69,7 +69,16 @@ the former.
 deno add jsr:@knight/knight
 ```
 
-`/index.ts`
+`deno.json`
+
+```json
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
+```
+
+`index.ts`
 
 ```ts
 import { Knight } from "@knight/knight";
@@ -93,7 +102,7 @@ define your own custom endpoints using the `@Endpoint` decorator.
 
 <br/>
 
-`/controller/UserController.ts`
+`controller/UserController.ts`
 
 ```ts
 import {
@@ -139,7 +148,7 @@ that the property is optional to body mapping functions.
 
 <br/>
 
-`/model/User.ts`
+`model/User.ts`
 
 ```ts
 import { Optional } from "@knight/knight";
