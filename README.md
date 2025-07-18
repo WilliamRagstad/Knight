@@ -34,7 +34,7 @@ Focus on what you want to do, and the framework will take care of the rest.
 
 ## Documentation
 
-> ### View the full [technical documentation](https://jsr.io/@knight/knight@3.0.0).
+> ### View the full [technical documentation](https://jsr.io/@knight/knight/doc).
 
 ## Getting Started
 

@@ -57,7 +57,7 @@ export default class UserController extends IController {
     try {
       throw new Error("This is a crash!");
     } catch (error) {
-      let err = error instanceof Error ? error.message : String(error);
+      const err = error instanceof Error ? error.message : String(error);
       this.log.warning(err);
       this.log.error(err);
       this.log.critical(err);

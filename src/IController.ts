@@ -1,4 +1,4 @@
-import { Context, Void } from "./types.ts";
+import type { Context, Void } from "./types.ts";
 
 export abstract class IController {
   path = "/";

@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { Sink } from "./Sink.ts";
+import type { Sink } from "./Sink.ts";
 import { LoggingLevel } from "../types.ts";
 import { templateMessageParser } from "./parser.ts";
 

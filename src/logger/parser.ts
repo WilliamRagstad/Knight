@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { MessageTemplateParams } from "../types.ts";
+import type { MessageTemplateParams } from "../types.ts";
 
 /**
  * Extract an object with key names from the template string and values from the params.
