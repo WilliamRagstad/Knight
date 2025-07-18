@@ -224,4 +224,29 @@ export class Knight {
     }
     return controllers;
   }
+
+  public static async start(port: number | string = 8000): Promise<void> {
+    const app = await this.build();
+    if (this._mode === AppMode.DEV) {
+      app.use(async (ctx, next) => {
+        console.log(`${ctx.request.method} ${ctx.request.url}`);
+        await next();
+      });
+    }
+    const portVal = typeof port === "string" ? parseInt(port, 10) : port;
+    if (isNaN(portVal) || portVal <= 0) {
+      throw new Error(`Invalid port number: ${port}`);
+    }
+    const banner = ` _   __      _       _     _   
+| | / /     (_)     | |   | |  
+| |/ / _ __  _  __ _| |__ | |_ 
+|    \\| '_ \\| |/ _' | '_ \\| __\|
+| |\\  \\ | | | | (_| | | | | |_
+\\_| \\_/_| |_|_|\\__, |_| |_|\\__\|
+Running in ${this._mode === AppMode.DEV ? "dev " : "prod"} __/ \| mode
+Listening on   |___\/  http://localhost:${portVal}
+`;
+    console.log(banner);
+    await app.listen({ port: Number(portVal) });
+  }
 }
