@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { Constructor, Request, Response } from "./types.ts";
+import type { Constructor, Request, Response } from "./types.ts";
 
 /**========================================================================
  *                           Request helpers

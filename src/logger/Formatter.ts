@@ -1,4 +1,4 @@
-import { LoggingLevel, MessageTemplateParams } from "../types.ts";
+import type { LoggingLevel, MessageTemplateParams } from "../types.ts";
 
 export abstract class Formatter {
   public abstract format(data: LoggingFormatterData): string;

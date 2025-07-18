@@ -1,12 +1,12 @@
 import { Sink } from "./Sink.ts";
 import {
   LoggingLevel,
-  MessageTemplateParams,
-  TimestampProvider,
+  type MessageTemplateParams,
+  type TimestampProvider,
 } from "../types.ts";
 import { defaultTimestamp } from "./defaults.ts";
 import { TextFormatter } from "./TextFormatter.ts";
-import { Formatter } from "./Formatter.ts";
+import type { Formatter } from "./Formatter.ts";
 
 /**
  * A console sink that writes to the terminal using a set of colors.
