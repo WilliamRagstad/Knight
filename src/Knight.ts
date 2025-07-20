@@ -10,6 +10,7 @@ import {
 } from "@oak/oak";
 
 import { AppMode, type Context, IController, type Params, type Void } from "./types.ts";
+import type { Logger } from './logger/Logger.ts';
 
 export class Knight {
   private static _mode = AppMode.DEV;
@@ -225,7 +226,7 @@ export class Knight {
     return controllers;
   }
 
-  public static async start(port: number | string = 8000): Promise<void> {
+  public static async start(port: number = 8080, logger?: Logger): Promise<void> {
     const app = await this.build();
     if (this._mode === AppMode.DEV) {
       app.use(async (ctx, next) => {
@@ -233,20 +234,33 @@ export class Knight {
         await next();
       });
     }
-    const portVal = typeof port === "string" ? parseInt(port, 10) : port;
-    if (isNaN(portVal) || portVal <= 0) {
+    if (isNaN(port) || port <= 0) {
       throw new Error(`Invalid port number: ${port}`);
     }
-    const banner = ` _   __      _       _     _   
+    const cyan = "\x1b[36m";
+    const green = "\x1b[32m";
+    const yellow = "\x1b[33m";
+    const italic = "\x1b[3m";
+    const reset = "\x1b[0m";
+    const modeStr = (this._mode === AppMode.DEV ? yellow + "development" : green + "production") + reset;
+    const versionStr = cyan + "v2.3.0" + reset;
+    const banner = `Starting Knight ${versionStr} in ${modeStr} mode
+ _   __      _       _     _   
 | | / /     (_)     | |   | |  
 | |/ / _ __  _  __ _| |__ | |_ 
 |    \\| '_ \\| |/ _' | '_ \\| __\|
 | |\\  \\ | | | | (_| | | | | |_
 \\_| \\_/_| |_|_|\\__, |_| |_|\\__\|
-Running in ${this._mode === AppMode.DEV ? "dev " : "prod"} __/ \| mode
-Listening on   |___\/  http://localhost:${portVal}
+=============== __/ \|==========
+${italic}By @WilliamR${reset}   |___\/  ${versionStr}
 `;
-    console.log(banner);
-    await app.listen({ port: Number(portVal) });
+    if (logger) {
+      logger.log(banner);
+      logger.info(`Listening on ${cyan}http://localhost:${port}${reset}`);
+    } else {
+      console.log(banner);
+      console.info(`Listening on ${cyan}http://localhost:${port}${reset}`);
+    }
+    await app.listen({ port: Number(port) });
   }
 }
