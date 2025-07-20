@@ -10,6 +10,9 @@ import {
 } from "@oak/oak";
 
 import { AppMode, type Context, IController, type Params, type Void } from "./types.ts";
+import type { Logger } from './logger/Logger.ts';
+
+import denoJson from "../deno.json" with { type: "json" };
 
 export class Knight {
   private static _mode = AppMode.DEV;
@@ -223,5 +226,43 @@ export class Knight {
       }
     }
     return controllers;
+  }
+
+  public static async start(port: number = 8080, logger?: Logger): Promise<void> {
+    const app = await this.build();
+    if (this._mode === AppMode.DEV) {
+      app.use(async (ctx, next) => {
+        console.log(`${ctx.request.method} ${ctx.request.url}`);
+        await next();
+      });
+    }
+    if (isNaN(port) || port <= 0) {
+      throw new Error(`Invalid port number: ${port}`);
+    }
+    const cyan = "\x1b[36m";
+    const green = "\x1b[32m";
+    const yellow = "\x1b[33m";
+    const italic = "\x1b[3m";
+    const reset = "\x1b[0m";
+    const modeStr = (this._mode === AppMode.DEV ? yellow + "development" : green + "production") + reset;
+    const versionStr = cyan + "v" + denoJson.version + reset;
+    const banner = `Starting Knight ${versionStr} in ${modeStr} mode
+ _   __      _       _     _   
+| | / /     (_)     | |   | |  
+| |/ / _ __  _  __ _| |__ | |_ 
+|    \\| '_ \\| |/ _' | '_ \\| __\|
+| |\\  \\ | | | | (_| | | | | |_
+\\_| \\_/_| |_|_|\\__, |_| |_|\\__\|
+=============== __/ \|==========
+${italic}By @WilliamR${reset}   |___\/  ${versionStr}
+`;
+    if (logger) {
+      logger.log(banner);
+      logger.info(`Listening on ${cyan}http://localhost:${port}${reset}`);
+    } else {
+      console.log(banner);
+      console.info(`Listening on ${cyan}http://localhost:${port}${reset}`);
+    }
+    await app.listen({ port: Number(port) });
   }
 }
