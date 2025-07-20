@@ -12,6 +12,8 @@ import {
 import { AppMode, type Context, IController, type Params, type Void } from "./types.ts";
 import type { Logger } from './logger/Logger.ts';
 
+import denoJson from "../deno.json" with { type: "json" };
+
 export class Knight {
   private static _mode = AppMode.DEV;
 
@@ -243,7 +245,7 @@ export class Knight {
     const italic = "\x1b[3m";
     const reset = "\x1b[0m";
     const modeStr = (this._mode === AppMode.DEV ? yellow + "development" : green + "production") + reset;
-    const versionStr = cyan + "v2.3.0" + reset;
+    const versionStr = cyan + "v" + denoJson.version + reset;
     const banner = `Starting Knight ${versionStr} in ${modeStr} mode
  _   __      _       _     _   
 | | / /     (_)     | |   | |  
