@@ -175,14 +175,17 @@ export class Knight {
    * create a new web server and connect controllers in the local project.
    * @returns A web server that can be started
    */
-  public static async build(): Promise<Application> {
+  public static async build(logger?: Logger): Promise<Application> {
     const app = new Application();
     const router = new Router();
 
     // Register all controllers
+    if (logger) {
+      logger.debug(`Searching for controllers in ${Deno.cwd()}`);
+    }
     const controllers = await this.findLocalControllersIn(Deno.cwd());
-    if (this._mode == AppMode.DEV) {
-      console.log(`Found ${controllers.length} controllers:`, controllers);
+    if (this._mode == AppMode.DEV && logger) {
+      logger.debug(`Found ${controllers.length} controllers: ${controllers.map(c => c.constructor.name).join(", ")}`);
     }
     this.registerRouter(router, controllers);
 
@@ -229,7 +232,7 @@ export class Knight {
   }
 
   public static async start(port: number = 8080, logger?: Logger): Promise<void> {
-    const app = await this.build();
+    const app = await this.build(logger);
     if (this._mode === AppMode.DEV) {
       app.use(async (ctx, next) => {
         console.log(`${ctx.request.method} ${ctx.request.url}`);
