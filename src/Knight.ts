@@ -212,7 +212,8 @@ export class Knight {
 ${darkGrey}===============${reset}|___\/${darkGrey}==========${reset}
 ${darkGrey}${italic}By @WilliamRagstad${reset}
 `;
-    const starting = `Starting Knight ${versionStr} in ${modeStr} mode`;
+    const plural = controllers.length === 1 ? "" : "s";
+    const starting = `Starting Knight ${versionStr} in ${modeStr} mode with ${controllers.length} controller${plural}`;
     const listening = `Listening on ${cyan}http://localhost:${port}${reset}`;
     console.log(banner);
     if (logger) {
