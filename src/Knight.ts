@@ -180,10 +180,12 @@ export class Knight {
     const router = new Router();
 
     // Register all controllers
+    const orgPath = Deno.cwd();
+    const path = this.cleanPath(orgPath);
     if (logger) {
-      logger.debug(`Searching for controllers in ${Deno.cwd()}`);
+      logger.debug(`Searching for controllers in ${path} (from ${orgPath})`);
     }
-    const controllers = await this.findLocalControllersIn(Deno.cwd());
+    const controllers = await this.findLocalControllersIn(path);
     if (this._mode == AppMode.DEV && logger) {
       logger.debug(`Found ${controllers.length} controllers: ${controllers.map(c => c.constructor.name).join(", ")}`);
     }
@@ -193,6 +195,27 @@ export class Knight {
     app.use(router.allowedMethods());
 
     return app;
+  }
+
+  /**
+   * Extracts local paths wrapped in other protocols, e.g:
+   * `https://jsr.io/C:/Users/...` -> `file:///C:/Users/...`
+   * @param path Path to clean (e.g. https://)
+   * @returns Cleaned path (file://)
+   */
+  private static cleanPath(path: string): string {
+    path = path.replace(/\\/g, "/");
+    if (path.startsWith("https://")) {
+      // Find the start index of the local path via `/[a-zA-Z]:\/` and remove up til that index
+      const match = path.match(/\/[a-zA-Z]:\//);
+      if (match) {
+        path = path.substring(match.index! + 1);
+        return `file://${path}`;
+      } else {
+        throw new Error(`Invalid path: ${path}`);
+      }
+    }
+    return path;
   }
 
   /**
@@ -206,7 +229,7 @@ export class Knight {
         const subControllers = await this.findLocalControllersIn(path);
         controllers.push(...subControllers);
       } else if (file.isFile && file.name.endsWith("Controller.ts")) {
-        const module = await import(`file://${path}`);
+        const module = await import(path);
         const defaultController = module.default;
         // Check that the default controller implements IController
         // console.log(module, defaultController);
