@@ -219,14 +219,6 @@ export class Knight {
   }
 
   /**
-   * Dynamically import a JavaScript module via a data URL
-   * @param file File path to read as javascript text and import dynamically via data URL
-   */
-  private static async dynamicImportUrl(file: string): Promise<string> {
-    return `data:text/javascript,${await Deno.readTextFile(file)}`;
-  }
-
-  /**
    * Find all controllers in the local project
    */
   private static async findLocalControllersIn(directory: string): Promise<IController[]> {
@@ -237,7 +229,9 @@ export class Knight {
         const subControllers = await this.findLocalControllersIn(path);
         controllers.push(...subControllers);
       } else if (file.isFile && file.name.endsWith("Controller.ts")) {
-        const module = await import(await Knight.dynamicImportUrl(path));
+        // Dynamically import a JavaScript module via a data URL
+        const importUrl = `data:text/javascript,${await Deno.readTextFile(path)}`;
+        const module = await import(importUrl);
         const defaultController = module.default;
         // Check that the default controller implements IController
         // console.log(module, defaultController);
