@@ -230,8 +230,8 @@ export class Knight {
         controllers.push(...subControllers);
       } else if (file.isFile && file.name.endsWith("Controller.ts")) {
         // Dynamically import a JavaScript module via a data URL
-        const importUrl = `data:text/javascript,${await Deno.readTextFile(path)}`;
-        const module = await import(importUrl);
+        const fileContent = await Deno.readTextFile(path);
+        const module = await import(`data:text/javascript,${fileContent}`);
         const defaultController = module.default;
         // Check that the default controller implements IController
         // console.log(module, defaultController);
