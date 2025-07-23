@@ -9,7 +9,7 @@ import {
   type State,
 } from "@oak/oak";
 
-import { AppMode, type Context, IController, type Params, type Void } from "./types.ts";
+import { AppMode, type Context, type IController, type Params, type Void } from "./types.ts";
 import type { Logger } from './logger/Logger.ts';
 
 import denoJson from "../deno.json" with { type: "json" };
@@ -147,49 +147,15 @@ export class Knight {
   }
 
   /**
-   * @deprecated Use Knight.build() instead
-   *
-   * Register a list of controllers
-   */
-  public static registerApp(app: Application, controllers: IController[]) {
-    const router = new Router();
-    this.registerRouter(router, controllers);
-    app.use(router.routes());
-    app.use(router.allowedMethods());
-  }
-
-  /**
-   * @deprecated Use Knight.build() instead
-   *
-   * Register a list of controllers and create a new web server
-   * @param controllers List of controllers to register
-   * @returns A web server that can be started
-   */
-  public static createApi(controllers: IController[]): Application {
-    const app = new Application();
-    this.registerApp(app, controllers);
-    return app;
-  }
-
-  /**
    * create a new web server and connect controllers in the local project.
    * @returns A web server that can be started
    */
-  public static async build(logger?: Logger): Promise<Application> {
+  public static build(controllers: IController[]): Application {
     const app = new Application();
     const router = new Router();
 
     // Register all controllers
-    const orgPath = Deno.cwd();
-    const path = this.cleanPath(orgPath);
-    if (logger) {
-      logger.debug(`Searching for controllers in ${path} (from ${orgPath})`);
-    }
-    const controllers = await this.findLocalControllersIn(path);
-    if (this._mode == AppMode.DEV && logger) {
-      logger.debug(`Found ${controllers.length} controllers: ${controllers.map(c => c.constructor.name).join(", ")}`);
-    }
-    this.registerRouter(router, controllers);
+    Knight.registerRouter(router, controllers);
 
     app.use(router.routes());
     app.use(router.allowedMethods());
@@ -197,75 +163,36 @@ export class Knight {
     return app;
   }
 
-  /**
-   * Extracts local paths wrapped in other protocols, e.g:
-   * `https://jsr.io/C:/Users/...` -> `file:///C:/Users/...`
-   * @param path Path to clean (e.g. https://)
-   * @returns Cleaned path (file://)
-   */
-  private static cleanPath(path: string): string {
-    path = path.replace(/\\/g, "/");
-    if (path.startsWith("https://")) {
-      // Find the start index of the local path via `/[a-zA-Z]:\/` and remove up til that index
-      const match = path.match(/\/[a-zA-Z]:\//);
-      if (match) {
-        path = path.substring(match.index! + 1);
-        return `file://${path}`;
-      } else {
-        throw new Error(`Invalid path: ${path}`);
-      }
-    }
-    return path;
-  }
 
   /**
-   * Find all controllers in the local project
+   * Starts the web server with the given controllers on the specified port.
+   * 
+   * @example
+   * ```ts
+   * import { Knight, Controller } from "@knight/knight";
+   *
+   * @Controller("/my-controller")
+   * export default class MyController extends IController {
+   *     get({ response }: Context) {
+   *         ok(response, "Hello from MyController!");
+   *     }
+   * }
+   * Knight.start([MyController], 8080);
+   * ```
+   * @param controllers The list of controllers to register
+   * @param port The port to listen on, defaults to 8080
+   * @param logger An optional logger instance
    */
-  private static async findLocalControllersIn(directory: string): Promise<IController[]> {
-    const controllers: IController[] = [];
-    for await (const file of Deno.readDir(directory)) {
-      const path = `${directory}/${file.name}`;
-      if (file.isDirectory) {
-        const subControllers = await this.findLocalControllersIn(path);
-        controllers.push(...subControllers);
-      } else if (file.isFile && file.name.endsWith("Controller.ts")) {
-        // Dynamically import a JavaScript module via a data URL
-        const fileContent = await Deno.readTextFile(path);
-        const module = await import(`data:text/javascript,${fileContent}`);
-        const defaultController = module.default;
-        // Check that the default controller implements IController
-        // console.log(module, defaultController);
-        if (
-          defaultController && defaultController.prototype &&
-          defaultController.prototype.constructor
-        ) {
-          // Instantiate the default controller
-          const c = new (defaultController)();
-          if (c instanceof IController) {
-            controllers.push(c);
-          } else {
-            console.error(
-              `Controller ${file.name} does not implement IController`,
-            );
-          }
-        } else {
-          console.warn(`${path} does not export a valid default controller!`);
-        }
-      }
-    }
-    return controllers;
-  }
-
-  public static async start(port: number = 8080, logger?: Logger): Promise<void> {
-    const app = await this.build(logger);
-    if (this._mode === AppMode.DEV) {
-      app.use(async (ctx, next) => {
-        console.log(`${ctx.request.method} ${ctx.request.url}`);
-        await next();
-      });
-    }
+  public static async start(controllers: IController[], port: number = 8080, logger?: Logger): Promise<void> {
     if (isNaN(port) || port <= 0) {
       throw new Error(`Invalid port number: ${port}`);
+    }
+    const app = this.build(controllers);
+    if (this._mode === AppMode.DEV) {
+      app.use(async (ctx, next) => {
+        logger?.debug(`${ctx.request.method} ${ctx.request.url}`);
+        await next();
+      });
     }
     const cyan = "\x1b[36m";
     const green = "\x1b[32m";
@@ -284,13 +211,14 @@ export class Knight {
 =============== __/ \|==========
 ${italic}By @WilliamR${reset}   |___\/  ${versionStr}
 `;
+    const listening = `Listening on ${cyan}http://localhost:${port}${reset}`;
     if (logger) {
       logger.log(banner);
-      logger.info(`Listening on ${cyan}http://localhost:${port}${reset}`);
+      logger.info(listening);
     } else {
       console.log(banner);
-      console.info(`Listening on ${cyan}http://localhost:${port}${reset}`);
+      console.info(listening);
     }
-    await app.listen({ port: Number(port) });
+    await app.listen({ port });
   }
 }
