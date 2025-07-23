@@ -19,7 +19,7 @@
 		<img alt="All Contributors" src="https://img.shields.io/badge/all_contributors-1-g.svg?style=flat-square"/>
 		<!-- ALL-CONTRIBUTORS-BADGE:END -->
 		<img alt="GitHub release" src="https://img.shields.io/github/release/WilliamRagstad/Knight?style=flat-square"/>
-		<img alt="Deno" src="https://img.shields.io/badge/deno-1.18.0+-green.svg?style=flat-square"/>
+		<img alt="Deno" src="https://img.shields.io/badge/deno-2+-green.svg?style=flat-square"/>
 	</p>
 </div>
 
