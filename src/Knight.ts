@@ -195,28 +195,31 @@ export class Knight {
       });
     }
     const cyan = "\x1b[36m";
+    const darkGrey = "\x1b[90m";
     const green = "\x1b[32m";
+    const orange = "\x1b[38;5;208m";
     const yellow = "\x1b[33m";
     const italic = "\x1b[3m";
     const reset = "\x1b[0m";
     const modeStr = (this._mode === AppMode.DEV ? yellow + "development" : green + "production") + reset;
     const versionStr = cyan + "v" + denoJson.version + reset;
-    const banner = `Starting Knight ${versionStr} in ${modeStr} mode
- _   __      _       _     _   
-| | / /     (_)     | |   | |  
-| |/ / _ __  _  __ _| |__ | |_ 
-|    \\| '_ \\| |/ _' | '_ \\| __\|
-| |\\  \\ | | | | (_| | | | | |_
-\\_| \\_/_| |_|_|\\__, |_| |_|\\__\|
-=============== __/ \|==========
-${italic}By @WilliamR${reset}   |___\/  ${versionStr}
+    const banner = ` _   __      _       _     _   ${orange}__ _ _${reset}
+| | / /     (_)     | |   | |  ${orange}\\ \\ \\ \\${reset}
+| |/ / _ __  _  __ _| |__ | |_ ${orange} \\ \\ \\ \\${reset}
+|    \\| '_ \\| |/ _' | '_ \\| __\|${orange}  ) ) ) )${reset}
+| |\\  \\ | | | | (_| | | | | |_ ${orange} / / / /${reset}
+\\_| \\_/_| |_|_|\\__, |_| |_|\\__\|${orange}/_/_/_/${reset}
+${darkGrey}===============${reset}|___\/${darkGrey}==========${reset}
+${darkGrey}${italic}By @WilliamRagstad${reset}
 `;
+    const starting = `Starting Knight ${versionStr} in ${modeStr} mode`;
     const listening = `Listening on ${cyan}http://localhost:${port}${reset}`;
+    console.log(banner);
     if (logger) {
-      logger.log(banner);
+      logger.info(starting);
       logger.info(listening);
     } else {
-      console.log(banner);
+      console.info(starting);
       console.info(listening);
     }
     await app.listen({ port });
