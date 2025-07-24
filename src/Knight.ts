@@ -208,9 +208,9 @@ export class Knight {
 | |/ / _ __  _  __ _| |__ | |_ ${orange} \\ \\ \\ \\${reset}
 |    \\| '_ \\| |/ _' | '_ \\| __\|${orange}  ) ) ) )${reset}
 | |\\  \\ | | | | (_| | | | | |_ ${orange} / / / /${reset}
-\\_| \\_/_| |_|_|\\__, |_| |_|\\__\|${orange}/_/_/_/${reset}
-${darkGrey}===============${reset}|___\/${darkGrey}==========${reset}
-${darkGrey}${italic}By @WilliamRagstad${reset}
+|_| \\_/_| |_|_|\\__, |_| |_|\\__\|${orange}/_/_/_/${reset}
+${darkGrey}===============${reset}|___\/${darkGrey}=================${reset}
+:: ${green}Knight${reset} ${versionStr} ${darkGrey}${italic}By WilliamRagstad${reset} ::
 `;
     const plural = controllers.length === 1 ? "" : "s";
     const starting = `Starting Knight ${versionStr} in ${modeStr} mode with ${controllers.length} controller${plural}`;
